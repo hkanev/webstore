@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'register' %}
+
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" action="{{ path('user_register') }}" method="post">
+                <fieldset>
+                    <legend>Register</legend>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_username">Username</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="user_username" placeholder="Username" name="user[username]" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_email">Email</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="user_email" placeholder="Email" name="user[email]" required type="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_password_first">Password</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="user_password_first" placeholder="Password" name="user[password][first]" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_password_second">Confirm Password</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="user_password_second" placeholder="Password" name="user[password][second]" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_telephone">Address</label>
+                        <div class="col-sm-4 ">
+                            <textarea class="form-control" rows="10" id="user_address" name="user[address]" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_telephone">Telephone</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="user_telephone" placeholder="Telephone" name="user[telephone]" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_country">Country</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="user_country" placeholder="Country" name="user[country]" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_city">City</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="user_city" placeholder="City" name="user[city]" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" href="{{ path('webstore_default_index') }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                    {{  form_row(form._token) }}
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}
