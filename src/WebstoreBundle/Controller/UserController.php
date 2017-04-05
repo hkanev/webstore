@@ -70,7 +70,7 @@ class UserController extends Controller
     public function profileAction()
     {
         $user = $this->getUser();
-        return $this->render("security/login.html.twig", ['user'=>$user]);
+        return $this->render("user/profile.html.twig", ['user'=>$user]);
     }
 
 }
