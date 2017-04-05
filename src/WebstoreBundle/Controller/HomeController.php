@@ -9,11 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class HomeController extends Controller
 {
     /**
-     * @Route("/", name="blog_index")
+     * @Route("/", name="webstore_index")
      * @Method("GET")
      */
     public function indexAction()
     {
-      //  return $this->render('home:Default:home.html.twig');
+       return $this->render('home/index.html.twig');
     }
 }
