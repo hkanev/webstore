@@ -1,0 +1,5 @@
+{% extends 'bootstrap_3_horizontal_layout.html.twig' %}
+{% block textarea_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) %}
+    {{- parent() -}}
+{%- endblock textarea_widget %}

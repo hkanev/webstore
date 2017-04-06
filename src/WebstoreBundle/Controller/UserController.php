@@ -5,8 +5,10 @@ namespace WebstoreBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Response;
 use WebstoreBundle\Entity\Role;
 use WebstoreBundle\Entity\User;
+use WebstoreBundle\Form\EditUserType;
 use WebstoreBundle\Form\UserType;
 use WebstoreBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -61,7 +63,35 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * @Route("profile/edit", name="user_edit")
+     * @param Request $request
+     * @return Response
+     */
+    public function editAction(Request $request)
+    {
+        $user = $this->getUser();
+        $user->getRoles();
 
+        if(null === $user){
+            return $this->redirectToRoute('webstore_index');
+        }
+
+        $form = $this->createForm(EditUserType::class, $user);
+
+        $roleRepo = $this->getDoctrine()->getRepository(Role::class);
+        $roles = $roleRepo->findAll();
+
+        $form->handleRequest($request);
+
+        if($form->isValid() && $form->isSubmitted())    {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+        }
+
+        return $this->render('user/edit.html.twig', array('user' => $user,
+            'form' => $form->createView()));
+    }
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
@@ -70,7 +100,7 @@ class UserController extends Controller
     public function profileAction()
     {
         $user = $this->getUser();
+
         return $this->render("user/profile.html.twig", ['user'=>$user]);
     }
-
 }

@@ -32,6 +32,18 @@
                     </button>
                 </div>
                 <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li>
+                            <a href="{{ path('product_add_form') }}">
+                                Add Product
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('products_list') }}">
+                                List Products
+                            </a>
+                        </li>
+                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {% if app.user %}
                             <li>
@@ -65,6 +77,14 @@
 
 <div class="container body-container">
     {% block body %}
+        {% block flash %}
+            {% for msg in app.session.flashBag.get('info') %}
+                <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>{{ msg }}</strong>
+                </div>
+            {% endfor %}
+        {% endblock %}
         <div class="row">
             <div id="main" class="col-sm-9">
                 {% block main %}{% endblock %}
