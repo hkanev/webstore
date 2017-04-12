@@ -3,6 +3,7 @@
 namespace WebstoreBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,7 +18,9 @@ class ProductType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('price', NumberType::class);
+            ->add('price', NumberType::class)
+            ->add('image', FileType::class, array('data_class' => null))
+            ->add('category');
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -25,12 +25,13 @@ class ProductController extends Controller
     /**
      * @Route("/products/view/{id}", name="product_view")
      * @param Product $product
+     * @return Response
      */
     public function viewAction(Product $product)
     {
         $form = $this->createForm(ProductType::class, $product);
 
-        return $this->render('products/view.html.twig', ['form' => $form->createView()]);
+        return $this->render('products/view.html.twig', ['form' => $form->createView() , 'product' => $product]);
     }
 
     /**
@@ -58,6 +59,11 @@ class ProductController extends Controller
         $form->handleRequest($request);
 
         if($form->isValid()){
+            $image = $product->getImage();
+            $imageName = md5(uniqid()).'.'.$image->guessExtension();
+            $image->move($this->getParameter('images_products'), $imageName);
+            $product->setImage($imageName);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();

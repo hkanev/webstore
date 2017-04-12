@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Category
  *
- * @ORM\Table(name="category")
+ * @ORM\Table(name="categories")
  * @ORM\Entity(repositoryClass="WebstoreBundle\Repository\CategoryRepository")
  */
 class Category
@@ -89,6 +89,11 @@ class Category
         $this->products = $products;
     }
 
+
+    function __toString()
+    {
+      return $this->name;
+    }
 
 }
 

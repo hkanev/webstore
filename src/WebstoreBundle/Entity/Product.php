@@ -57,16 +57,20 @@ class Product
     private $reviews;
 
     /**
-     * @var Category[]|ArrayCollection
-     * @ORM\ManyToOne(targetEntity="WebstoreBundle\Entity\Product", inversedBy="categories")
+     * @ORM\ManyToOne(targetEntity="WebstoreBundle\Entity\Category", inversedBy="category")
      */
-    private $categories;
+    private $category;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     */
+    private $image;
 
     function __construct()
     {
         $this->createdOn = new \DateTime();
         $this->reviews = new ArrayCollection();
-        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -183,20 +187,37 @@ class Product
         $this->reviews = $reviews;
     }
 
+
     /**
      * @return mixed
      */
-    public function getCategories()
+    public function getImage()
     {
-        return $this->categories;
+        return $this->image;
     }
 
     /**
-     * @param mixed $categories
+     * @param mixed $image
      */
-    public function setCategories($categories)
+    public function setImage($image)
     {
-        $this->categories = $categories;
+        $this->image = $image;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
     }
 
 

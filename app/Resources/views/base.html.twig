@@ -1,112 +1,163 @@
-{#
-   This is the base template used as the application layout which contains the
-   common elements and decorates all the other templates.
-   See http://symfony.com/doc/current/book/templating.html#template-inheritance-and-layouts
-#}
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>{% block title %}Webstore{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Webstore</title>
     {% block stylesheets %}
+        <!-- Google Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     {% endblock %}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
 
-<body id="{% block body_id %}{% endblock %}">
-
-{% block header %}
-    <header>
-        <div class="navbar navbar-default navbar-static-top" role="navigation">
+<body>
+{% block body %}
+    {% block header %}
+        <div class="header-area">
             <div class="container">
-                <div class="navbar-header">
-                    <a href="{{ path('webstore_index') }}" class="navbar-brand">Webstore</a>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="user-menu">
+                            <ul>
+                                {% if app.user %}
+                                <li><a href="{{ path('user_profile') }}"><i class="fa fa-user"></i> My Account</a></li>
+                                <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                <li><a href="#"><i class="fa fa-user"></i> My Cart</a></li>
+                                <li><a href="#"><i class="fa fa-user"></i> Checkout</a></li>
 
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="header-right">
+                            <ul class="list-unstyled list-inline">
+                                {% if app.user %}
+                                    <li><a href="{{ path('security_logout') }}"><i class="fa fa-user"></i> Logout</a></li>
+                                {% else %}
+                                    <li> <a href="{{ path('user_register') }}"><i class="fa fa-user"></i> Register</a></li>
+                                    <li> <a href="{{ path('security_login') }}"><i class="fa fa-user"></i> Login</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-left">
-                        <li>
-                            <a href="{{ path('product_add_form') }}">
-                                Add Product
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ path('products_list') }}">
-                                List Products
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        {% if app.user %}
-                            <li>
-                                <a href="{{ path('user_profile') }}">
-                                    My Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('security_logout') }}">
-                                    Logout
-                                </a>
-                            </li>
-                        {% else %}
-                            <li>
-                                <a href="{{ path('user_register') }}">
-                                    REGISTER
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('security_login') }}">
-                                    LOGIN
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </header>
-{% endblock %}
-
-<div class="container body-container">
-    {% block body %}
-        {% block flash %}
-            {% for msg in app.session.flashBag.get('info') %}
-                <div class="alert alert-dismissible alert-success">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>{{ msg }}</strong>
-                </div>
-            {% endfor %}
-        {% endblock %}
-        <div class="row">
-            <div id="main" class="col-sm-9">
-                {% block main %}{% endblock %}
             </div>
         </div>
     {% endblock %}
-</div>
 
-{% block footer %}
-    <footer>
-        <div class="container modal-footer">
-            <p>&copy; {{ "now"|date("Y") }} - Software University Foundation</p>
+    {% block branding %}
+        <div class="site-branding-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="logo">
+                            <h1><a href="./"><img src="img/logo.png"></a></h1>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="shopping-item">
+                            <a href="cart.html">Cart - <span class="cart-amunt">$100</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">5</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+    {% endblock %}
+
+    {% block mainmenu %}
+        <div class="mainmenu-area">
+            <div class="container">
+                <div class="row">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="{{ path('webstore_index') }}">Home</a></li>
+                            <li><a href="{{ path('products_list') }}">Shop page</a></li>
+                            <li><a href="#">Cart</a></li>
+                            <li><a href="#">Checkout</a></li>
+                            <li><a href="#">Others</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="container body-container">
+            {% block flash %}
+                {% for msg in app.session.flashBag.get('info') %}
+                    <div class="alert alert-dismissible alert-success">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>{{ msg }}</strong>
+                    </div>
+                {% endfor %}
+            {% endblock %}
+            <div class="row">
+                <div id="main" class="col-sm-9">
+                    {% block main %}{% endblock %}
+                </div>
+            </div>
+    </div>
+
+    {% block footer %}
+        <div class="footer-bottom-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="copyright">
+                            <p>&copy; Softuni webstore project.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
 {% endblock %}
 
-{% block javascripts %}
-    <script src="{{ asset('js/jquery-2.2.4.min.js') }}"></script>
-    <script src="{{ asset('js/moment.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
-{% endblock %}
+{% block javascript %}
+    <!-- Latest jQuery form server -->
+    <script src="https://code.jquery.com/jquery.min.js"></script>
 
+    <!-- Bootstrap JS form CDN -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    {#<!-- jQuery sticky menu -->#}
+    {#<script src="{{ asset('js/owl.carousel.min.js') }}"></script>#}
+    {#<script src="{{ asset('js/jquery.sticky.js') }}"></script>#}
+
+    <!-- jQuery easing -->
+    <script src="{{ asset('js/jquery.easing.1.3.min.js') }}"></script>
+
+    <!-- Main Script -->
+    <script src="{{ asset('js/main.js') }}"></script>
+
+    <!-- Slider -->
+    <script type="text/javascript" src="{{ asset('js/bxslider.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/script.slider.js') }}"></script>
+{% endblock %}
 </body>
 </html>
