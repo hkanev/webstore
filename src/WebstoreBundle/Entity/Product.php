@@ -2,6 +2,7 @@
 
 namespace WebstoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -49,9 +50,23 @@ class Product
      */
     private $createdOn;
 
+    /**
+     * @var Review[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="WebstoreBundle\Entity\Review", mappedBy="product")
+     */
+    private $reviews;
+
+    /**
+     * @var Category[]|ArrayCollection
+     * @ORM\ManyToOne(targetEntity="WebstoreBundle\Entity\Product", inversedBy="categories")
+     */
+    private $categories;
+
     function __construct()
     {
         $this->createdOn = new \DateTime();
+        $this->reviews = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -150,6 +165,38 @@ class Product
     public function setCreatedOn($createdOn)
     {
         $this->createdOn = $createdOn;
+    }
+
+    /**
+     * @return ArrayCollection|Review[]
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+    /**
+     * @param ArrayCollection|Review[] $reviews
+     */
+    public function setReviews($reviews)
+    {
+        $this->reviews = $reviews;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param mixed $categories
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
     }
 
 

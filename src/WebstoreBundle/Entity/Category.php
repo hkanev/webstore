@@ -2,16 +2,16 @@
 
 namespace WebstoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Role\RoleInterface;
 
 /**
- * Role
+ * Category
  *
- * @ORM\Table(name="roles")
- * @ORM\Entity(repositoryClass="WebstoreBundle\Repository\RoleRepository")
+ * @ORM\Table(name="category")
+ * @ORM\Entity(repositoryClass="WebstoreBundle\Repository\CategoryRepository")
  */
-class Role implements RoleInterface
+class Category
 {
     /**
      * @var int
@@ -30,9 +30,15 @@ class Role implements RoleInterface
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="WebstoreBundle\Entity\User", mappedBy="roles")
+     * @var Product[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="WebstoreBundle\Entity\Product", mappedBy="categories")
      */
-    private $users;
+    private $products;
+
+    function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -49,7 +55,7 @@ class Role implements RoleInterface
      *
      * @param string $name
      *
-     * @return Role
+     * @return Category
      */
     public function setName($name)
     {
@@ -60,7 +66,6 @@ class Role implements RoleInterface
 
     /**
      * Get name
-     *
      * @return string
      */
     public function getName()
@@ -68,24 +73,22 @@ class Role implements RoleInterface
         return $this->name;
     }
 
-    public function getUsers()
+    /**
+     * @return mixed
+     */
+    public function getProducts()
     {
-        return $this->users;
+        return $this->products;
     }
 
     /**
-     * Returns the role.
-     *
-     * This method returns a string representation whenever possible.
-     *
-     * When the role cannot be represented with sufficient precision by a
-     * string, it should return null.
-     *
-     * @return string|null A string representation of the role, or null
+     * @param mixed $products
      */
-    public function getRole()
+    public function setProducts($products)
     {
-        return $this->name;
+        $this->products = $products;
     }
+
+
 }
 

@@ -28,6 +28,7 @@
                         <td>{{ product.description|slice(0,70) }}</td>
                         <td>
                             <form action="{{ path('product_delete_process', {'id': product.id}) }}", method="post">
+                                <a href="{{ path('product_reviews', {'id': product.id}) }} " class="btn btn-primary btn-sm">View Reviews</a>
                                 <a href="{{ path('product_edit_form', {'id': product.id}) }} " class="btn btn-primary btn-sm">Edit</a>
                                 <button type="submit" class="btn btn-primary btn-sm">Delete</button>
                             </form>
