@@ -100,7 +100,10 @@
                             <li><a href="#">Checkout</a></li>
                             <li><a href="#">Others</a></li>
                             <li><a href="#">Contact</a></li>
-                        </ul>
+                            {% if is_granted('ROLE_ADMIN', 'ROLE_EDITOR') %}
+                                <li><a href="{{ path('admin_show') }}">Admin Panel</a></li>
+                            {% endif %}
+                            </ul>
                     </div>
                 </div>
             </div>

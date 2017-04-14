@@ -35,6 +35,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'WebstoreBundle\Entity\User',
+            'attr'=>array('novalidate'=>'novalidate')
         ));
     }
 }

@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'adminBase.html.twig' %}
 
 {% block body_id 'profile' %}
 
@@ -29,30 +29,30 @@
 
 
 {% block main %}
-<div class="container col-sm-6">
-    <div class="well">
-       <strong>Username: </strong>{{ user.username }}
-        <br>
-        <strong>Email: </strong>  {{ user.email }}
-        <br>
-        <strong>Address: </strong>{{ user.address }}
-        <br>
-        <strong>Telephone: </strong> {{ user.telephone }}
-        <br>
-        <strong>Country: </strong> {{ user.country }}
-        <br>
-        <strong>City: </strong>  {{ user.city }}
+    <div class="container col-sm-6">
+        <div class="well">
+            <strong>Username: </strong>{{ user.username }}
+            <br>
+            <strong>Email: </strong>  {{ user.email }}
+            <br>
+            <strong>Address: </strong>{{ user.address }}
+            <br>
+            <strong>Telephone: </strong> {{ user.telephone }}
+            <br>
+            <strong>Country: </strong> {{ user.country }}
+            <br>
+            <strong>City: </strong>  {{ user.city }}
+        </div>
     </div>
-</div>
-<div class="container col-sm-6">
-    <div class="well">
-        <strong>All orders: </strong> 25
-        <br>
-        <strong>Successful orders: </strong>  22
-        <br>
-        <strong>In progress: </strong> 2
-        <br>
-        <strong>Canceled orders: </strong> 1
+    <div class="container col-sm-6">
+        <div class="well">
+            <strong>All orders: </strong> 25
+            <br>
+            <strong>Successful orders: </strong>  22
+            <br>
+            <strong>In progress: </strong> 2
+            <br>
+            <strong>Canceled orders: </strong> 1
+        </div>
     </div>
-</div>
 {% endblock %}

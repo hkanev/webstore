@@ -1,0 +1,46 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
+  {% block mainmenu %}
+      <div class="mainmenu-area">
+          <div class="container">
+              <div class="row">
+                  <div class="navbar-header">
+                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                          <span class="sr-only">Toggle navigation</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                      </button>
+                  </div>
+                  <div class="navbar-collapse collapse">
+                      <ul class="nav navbar-nav">
+                          <li class="active"><a href="{{ path('webstore_index') }}">Home</a></li>
+                          <li><a href="{{ path('users_list') }}">Users</a></li>
+                          <li><a href="{{ path('products_list') }}">Products</a></li>
+                          <li><a href="{{ path('category_index') }}">Categories</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  {% endblock %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <fieldset>
+        <legend>Admin Panel</legend>
+        <div class="well">
+          <strong>Users:</strong> {{ users }}
+            <br>
+            <strong>Products:</strong> {{ products }}
+            <br>
+            <strong>Categories:</strong> {{ categories }}
+        </div>
+        </fieldset>
+    </div>
+{% endblock %}
+

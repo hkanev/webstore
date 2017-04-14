@@ -53,7 +53,7 @@ class UserController extends Controller
 
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
-
+            $this->addFlash("info", "User ". $user->getUsername(). " created!");
             return $this->redirectToRoute('security_login');
         }
 
@@ -77,16 +77,18 @@ class UserController extends Controller
             return $this->redirectToRoute('webstore_index');
         }
 
-        $form = $this->createForm(EditUserType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
 
         $roleRepo = $this->getDoctrine()->getRepository(Role::class);
         $roles = $roleRepo->findAll();
 
         $form->handleRequest($request);
 
-        if($form->isValid() && $form->isSubmitted())    {
+        if( $form->isSubmitted() && $form->isValid())    {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+            $this->addFlash("info", "User ". $user->getUsername(). " edited!");
+            return $this->redirectToRoute('webstore_index');
         }
 
         return $this->render('user/edit.html.twig', array('user' => $user,
@@ -103,4 +105,7 @@ class UserController extends Controller
 
         return $this->render("user/profile.html.twig", ['user'=>$user]);
     }
+
+
+
 }

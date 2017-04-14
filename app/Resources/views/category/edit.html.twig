@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'adminbase.html.twig' %}
 
 {% block body_id %}
 
@@ -7,17 +7,23 @@
 {% block main %}
     <div class="container body-content span=8 offset=2">
         <div class="well">
-            {{ form_start(form) }}
+            {{ form_start(edit_form) }}
             <fieldset>
-                <legend>Edit user</legend>
-                {{ form_widget(form)  }}
+                <legend>Edit Category</legend>
+                {{ form_widget(edit_form)  }}
                 <div class="col-sm-4 col-sm-offset-4">
                     <a class="btn btn-default" href="{{ path('webstore_index') }}">Cancel</a>
                     <button type="submit" class="btn btn-primary">Edit</button>
                 </div>
             </fieldset>
-            {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_end(edit_form) }}
         </div>
     </div>
+
+    <ul>
+        <li>
+            <a href="{{ path('category_index') }}">Back to the list</a>
+        </li>
+    </ul>
 {% endblock %}
 
