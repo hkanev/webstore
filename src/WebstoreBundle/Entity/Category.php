@@ -30,6 +30,28 @@ class Category
     private $name;
 
     /**
+     * @ORM\Column(type="string")
+     *
+     */
+    private $image;
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    /**
      * @var Product[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="WebstoreBundle\Entity\Product", mappedBy="categories")
      */

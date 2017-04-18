@@ -9,6 +9,7 @@ imports:
 parameters:
     locale: en
     images_products: '%kernel.root_dir%/../web/uploads/products'
+    category_image: '%kernel.root_dir%/../web/uploads/categories'
 
 framework:
     #esi: ~

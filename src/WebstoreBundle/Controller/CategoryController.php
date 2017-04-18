@@ -44,6 +44,11 @@ class CategoryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $category->getImage();
+            $imageName = md5(uniqid()).'.'.$image->guessExtension();
+            $image->move($this->getParameter('category_image'), $imageName);
+            $category->setImage($imageName);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($category);
             $em->flush();

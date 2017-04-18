@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use WebstoreBundle\Entity\Category;
 use WebstoreBundle\Entity\Product;
 use WebstoreBundle\Form\ProductType;
 
@@ -34,9 +35,10 @@ class ProductController extends Controller
      */
     public function viewAction(Product $product)
     {
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
         $form = $this->createForm(ProductType::class, $product);
 
-        return $this->render('products/view.html.twig', ['form' => $form->createView() , 'product' => $product]);
+        return $this->render('products/view.html.twig', ['form' => $form->createView() , 'product' => $product , 'categories' => $categories]);
     }
 
     /**
