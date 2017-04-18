@@ -1,1 +1,3 @@
-{{ user.products }}
+{% for product in cart.products %}
+    {{ product.name }} <br>
+{% endfor %}

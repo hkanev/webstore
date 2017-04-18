@@ -84,6 +84,11 @@ class User implements UserInterface
      */
     private $roles;
 
+    /**
+     * @ORM\OneToOne(targetEntity="WebstoreBundle\Entity\Cart", mappedBy="user")
+     */
+    private $cart;
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();
@@ -294,6 +299,23 @@ class User implements UserInterface
 
         return $roles;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCart()
+    {
+        return $this->cart;
+    }
+
+    /**
+     * @param mixed $cart
+     */
+    public function setCart($cart)
+    {
+        $this->cart = $cart;
+    }
+
 
 
     public function addRole(Role $role) {

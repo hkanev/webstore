@@ -67,10 +67,16 @@ class Product
      */
     private $image;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="WebstoreBundle\Entity\Cart", mappedBy="products")
+     */
+    private $carts;
+
     function __construct()
     {
         $this->createdOn = new \DateTime();
         $this->reviews = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     /**
