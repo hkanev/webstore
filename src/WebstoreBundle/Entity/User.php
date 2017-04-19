@@ -89,8 +89,14 @@ class User implements UserInterface
      */
     private $order;
 
+    /**
+     * @ORM\Column(name="cash", type="decimal", precision=10, scale=2)
+     */
+    private $cash;
+
     public function __construct()
     {
+        $this->cash = 1000;
         $this->roles = new ArrayCollection();
         $this->order = new ArrayCollection();
     }
@@ -304,20 +310,34 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getCart()
+    public function getOrder()
     {
-        return $this->cart;
+        return $this->order;
     }
 
     /**
-     * @param mixed $cart
+     * @param mixed $order
      */
-    public function setCart($cart)
+    public function setOrder($order)
     {
-        $this->cart = $cart;
+        $this->order = $order;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCash()
+    {
+        return $this->cash;
+    }
 
+    /**
+     * @param mixed $cash
+     */
+    public function setCash($cash)
+    {
+        $this->cash = $cash;
+    }
 
     public function addRole(Role $role) {
         $this->roles[] = $role;

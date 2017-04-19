@@ -2,12 +2,14 @@
 
 namespace WebstoreBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\SecurityBundle\Tests\Functional\Bundle\AclBundle\Entity\Car;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use WebstoreBundle\Entity\Cart;
+use WebstoreBundle\Entity\Checkout;
 use WebstoreBundle\Entity\Orders;
 use WebstoreBundle\Entity\Product;
 use WebstoreBundle\Form\CartType;
@@ -29,7 +31,7 @@ class OrderController extends Controller
        $em->persist($order);
        $em->flush();
 
-           return $this->redirectToRoute('webstore_index');
+       return $this->redirectToRoute('webstore_index');
    }
 
     /**
@@ -37,15 +39,10 @@ class OrderController extends Controller
      */
    public function showCart()
    {
-       $user = $this->getUser()->getId();
-       $orders = $this->getDoctrine()->getManager()->getRepository(Orders::class)->findBy(['user' => $user]);
-       $totalPrice = 0;
-       foreach ($orders as $order) {
-           $price = $order->getProduct()->getPrice();
-           $quantity = $order->getProductQuantity();
-           $totalPrice += $price * $quantity;
-       }
-       return $this->render('order/my_cart.html.twig', ['orders' => $orders, 'totalprice' => $totalPrice]);
+      $orders = $this->getOrders();
+      $totalPrice = $this->setTotalPrice($orders);
+
+      return $this->render('order/my_cart.html.twig', ['orders' => $orders, 'totalprice' => $totalPrice]);
    }
 
     /**
@@ -53,12 +50,45 @@ class OrderController extends Controller
      */
    public function order(Request $request)
    {
-       $order = new Orders();
-       $user = $this->getUser()->getId();
-       $cart = $this->getDoctrine()->getManager()->getRepository(Cart::class)->findOneBy(['user' => $user]);
-       $order->setCart($cart);
+       $user = $this->getUser();
 
-        dump($request);
-        exit;
+       $checkout = new Checkout();
+       $orders = $this->getOrders();
+       $totalPrice = $this->setTotalPrice($orders);
+
+       foreach($orders as $order){
+          $order->setCheckout($checkout);
+       }
+
+       $cash = $user->getCash()-$totalPrice;
+       if($cash < 0){
+           throw new \Exception("Not enough money");
+       }
+       $user->setCash();
+       $checkout->setTotalPrice($totalPrice);
+
+       $em = $this->getDoctrine()->getManager();
+       $em->persist($checkout);
+       $em->persist($user);
+       $em->flush();
+
+       return $this->redirectToRoute('webstore_index');
+   }
+
+   private function getOrders()
+   {
+       $user = $this->getUser()->getId();
+       return $orders = $this->getDoctrine()->getManager()->getRepository(Orders::class)->findBy(['user' => $user]);
+   }
+
+   private function setTotalPrice($orders)
+   {
+       $totalPrice = 0;
+       foreach ($orders as $order) {
+           $price = $order->getProduct()->getPrice();
+           $quantity = $order->getProductQuantity();
+           $totalPrice += $price * $quantity;
+       }
+       return $totalPrice;
    }
 }

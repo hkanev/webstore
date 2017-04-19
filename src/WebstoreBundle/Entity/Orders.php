@@ -39,6 +39,11 @@ class Orders
     private $product;
 
     /**
+     * @ORM\ManyToOne(targetEntity="WebstoreBundle\Entity\Checkout", inversedBy="orders")
+     */
+    private $checkout;
+
+    /**
      * @return mixed
      */
     public function getProduct()
@@ -68,17 +73,10 @@ class Orders
         return $this->id;
     }
 
-    /**
-     * Set productQuantity
-     *
-     * @param integer $productQuantity
-     *
-     * @return Cart
-     */
+
     public function setProductQuantity($productQuantity)
     {
         $this->productQuantity = $productQuantity;
-        return $this;
     }
 
     /**
@@ -106,5 +104,22 @@ class Orders
     {
         $this->user = $user;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCheckout()
+    {
+        return $this->checkout;
+    }
+
+    /**
+     * @param mixed $checkout
+     */
+    public function setCheckout($checkout)
+    {
+        $this->checkout = $checkout;
+    }
+
 }
 
