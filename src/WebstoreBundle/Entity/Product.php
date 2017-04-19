@@ -31,6 +31,18 @@ class Product
     private $price;
 
     /**
+     * @var integer
+     * @ORM\Column(name="quantity", type="integer")
+     */
+    private $quantity;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="sold", type="integer", nullable=true)
+     */
+    private $sold;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100, unique=true)
@@ -225,5 +237,39 @@ class Product
     {
         $this->category = $category;
     }
+
+    /**
+     * @return int
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int $quantity
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCarts()
+    {
+        return $this->carts;
+    }
+
+    /**
+     * @param mixed $carts
+     */
+    public function setCarts($carts)
+    {
+        $this->carts = $carts;
+    }
+
+    
 }
 

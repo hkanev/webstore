@@ -27,7 +27,7 @@ class Cart
 
     /**
      * @var int
-     *
+     @
      * @ORM\Column(name="productQuantity", type="integer", nullable=true)
      */
     private $productQuantity;
@@ -45,6 +45,12 @@ class Cart
      *      )
      */
     private $products;
+
+
+    /**
+     * @ORM\OneToOne(targetEntity="WebstoreBundle\Entity\Orders", mappedBy="cart")
+     */
+    private $order;
 
     /**
      * Cart constructor.
