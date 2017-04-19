@@ -20,25 +20,16 @@ class OrderController extends Controller
    public function addToCart(Product $product, Request $request)
    {
        $user = $this->getUser();
-       if (!$user->getCart()) {
-           $cart = new Cart();
-           $cart->setUser($user);
-       } else {
-           $cart = $user->getCart();
-       }
-       foreach ($cart->findProducts() as $id) {
-           if ($id == $product->getId()) {
-               return $this->redirectToRoute('webstore_index');
-           }
-       }
-           $cart->getProducts()->add($product);
-           $cart->setProductQuantity($request->query->get('productQuantity'));
-           $em = $this->getDoctrine()->getManager();
-           $em->persist($cart);
-           $em->flush();
+       $order = new Orders();
+       $order->setUser($user);
+       $order->setProduct($product);
+       $order->setProductQuantity($request->query->get('productQuantity'));
+
+       $em = $this->getDoctrine()->getManager();
+       $em->persist($order);
+       $em->flush();
 
            return $this->redirectToRoute('webstore_index');
-
    }
 
     /**
@@ -47,9 +38,14 @@ class OrderController extends Controller
    public function showCart()
    {
        $user = $this->getUser()->getId();
-       $cart = $this->getDoctrine()->getManager()->getRepository(Cart::class)->findOneBy(['user' => $user]);
-
-       return $this->render('order/my_cart.html.twig', ['cart' => $cart]);
+       $orders = $this->getDoctrine()->getManager()->getRepository(Orders::class)->findBy(['user' => $user]);
+       $totalPrice = 0;
+       foreach ($orders as $order) {
+           $price = $order->getProduct()->getPrice();
+           $quantity = $order->getProductQuantity();
+           $totalPrice += $price * $quantity;
+       }
+       return $this->render('order/my_cart.html.twig', ['orders' => $orders, 'totalprice' => $totalPrice]);
    }
 
     /**

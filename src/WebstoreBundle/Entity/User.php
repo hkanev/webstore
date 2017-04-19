@@ -85,13 +85,14 @@ class User implements UserInterface
     private $roles;
 
     /**
-     * @ORM\OneToOne(targetEntity="WebstoreBundle\Entity\Cart", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="WebstoreBundle\Entity\Orders", mappedBy="user")
      */
-    private $cart;
+    private $order;
 
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+        $this->order = new ArrayCollection();
     }
 
     /**

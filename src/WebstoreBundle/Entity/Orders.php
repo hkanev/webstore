@@ -22,27 +22,41 @@ class Orders
     private $id;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdOn", type="datetime")
+     * @var int
+    @
+     * @ORM\Column(name="productQuantity", type="integer", nullable=true)
      */
-    private $createdOn;
+    private $productQuantity;
 
     /**
-     * @ORM\OneToOne(targetEntity="WebstoreBundle\Entity\Cart", inversedBy="order")
+     * @ORM\ManyToOne(targetEntity="WebstoreBundle\Entity\User", inversedBy="order")
      */
-    private $cart;
+    private $user;
 
     /**
-     * @var string
-     * @ORM\Column(name="status", type="string")
+     * @ORM\ManyToOne(targetEntity="WebstoreBundle\Entity\Product", inversedBy="order")
      */
-    private $status;
+    private $product;
 
-    function __construct()
+    /**
+     * @return mixed
+     */
+    public function getProduct()
     {
-        $this->createdOn = new \DateTime();
+        return $this->product;
     }
+
+    /**
+     * @param mixed $product
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
+    }
+
+    /**
+     * Cart constructor.
+     */
 
     /**
      * Get id
@@ -55,43 +69,42 @@ class Orders
     }
 
     /**
-     * Set createdOn
+     * Set productQuantity
      *
-     * @param \DateTime $createdOn
+     * @param integer $productQuantity
      *
-     * @return Orders
+     * @return Cart
      */
-    public function setCreatedOn($createdOn)
+    public function setProductQuantity($productQuantity)
     {
-        $this->createdOn = $createdOn;
-
+        $this->productQuantity = $productQuantity;
         return $this;
     }
 
     /**
-     * Get createdOn
+     * Get productQuantity
      *
-     * @return \DateTime
+     * @return int
      */
-    public function getCreatedOn()
+    public function getProductQuantity()
     {
-        return $this->createdOn;
+        return $this->productQuantity;
     }
 
     /**
      * @return mixed
      */
-    public function getCart()
+    public function getUser()
     {
-        return $this->cart;
+        return $this->user;
     }
 
     /**
-     * @param mixed $cart
+     * @param mixed $user
      */
-    public function setCart($cart)
+    public function setUser($user)
     {
-        $this->cart = $cart;
+        $this->user = $user;
     }
 }
 

@@ -79,16 +79,22 @@ class Product
      */
     private $image;
 
+//    /**
+//     * @ORM\ManyToMany(targetEntity="WebstoreBundle\Entity\Cart", mappedBy="products")
+//     */
+//    private $carts;
+
     /**
-     * @ORM\ManyToMany(targetEntity="WebstoreBundle\Entity\Cart", mappedBy="products")
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="WebstoreBundle\Entity\Orders", mappedBy="product")
      */
-    private $carts;
+    private $order;
 
     function __construct()
     {
         $this->createdOn = new \DateTime();
         $this->reviews = new ArrayCollection();
-        $this->carts = new ArrayCollection();
+        $this->order = new ArrayCollection();
     }
 
     /**

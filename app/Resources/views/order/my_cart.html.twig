@@ -14,35 +14,40 @@
             </tr>
             </thead>
             <tbody>
-            {% for product in cart.products %}
+            {% for order in orders %}
             <tr class="cart_item">
                 <td class="product-remove">
                     <a title="Remove this item" class="remove" href="#">×</a>
                 </td>
 
                 <td class="product-thumbnail">
-                    <a href="#"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="img/product-thumb-2.jpg"></a>
+                    <a href="#"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="{{ asset('uploads/products/'~order.product.image) }}"></a>
                 </td>
 
                 <td class="product-name">
-                    <a href="#l">{{ product.name }}</a>
+                    <a href="#l">{{ order.product.name }}</a>
                 </td>
 
                 <td class="product-price">
-                    <span class="amount">{{ product.price }}</span>
+                    <span class="amount">{{ order.product.price }}</span>
                 </td>
 
                 <td class="product-quantity">
                     <div class="quantity buttons_added">
-                        <input type="number" size="4" class="input-text qty text" title="Qty" value="1" min="0" step="1" name="quantity">
+                        <input type="number" size="4" class="input-text qty text" title="Qty" value="{{ order.productQuantity }}" min="0" step="1" name="quantity">
                     </div>
                 </td>
 
                 <td class="product-subtotal">
-                    <span class="amount">£15.00</span>
+                    <span class="amount">{{ order.product.price * order.productQuantity }}</span>
                 </td>
             </tr>
             {% endfor %}
+            <tr>
+                <td colspan="6"  style="text-align: right">
+                    {{ totalprice }}
+                </td>
+            </tr>
             <tr>
                 <td class="actions" colspan="6">
                     <div class="coupon">
