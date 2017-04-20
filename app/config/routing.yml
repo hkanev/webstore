@@ -1,5 +1,15 @@
-webstore:
-    resource: "@WebstoreBundle/Controller/"
+administration:
+    resource: "@AdministrationBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+user:
+    resource: "@UserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+shop:
+    resource: "@ShopBundle/Controller/"
     type:     annotation
     prefix:   /
 
