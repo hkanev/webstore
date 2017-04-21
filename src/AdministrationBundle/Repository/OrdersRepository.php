@@ -2,6 +2,8 @@
 
 namespace AdministrationBundle\Repository;
 
+use UserBundle\Entity\User;
+
 /**
  * OrdersRepository
  *
@@ -10,4 +12,11 @@ namespace AdministrationBundle\Repository;
  */
 class OrdersRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findOrders(User $user)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $qb->select('o')->where('o.checkout IS  NUll')->andWhere('o.user = :usr')->setParameter('usr', $user);
+
+        return $qb->getQuery()->getResult();
+    }
 }

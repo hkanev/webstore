@@ -3,6 +3,7 @@
 namespace AdministrationBundle\Controller;
 
 use AdministrationBundle\Entity\Category;
+use AdministrationBundle\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -40,13 +41,12 @@ class CategoryController extends Controller
     public function newAction(Request $request)
     {
         $category = new Category();
-        $form = $this->createForm('WebstoreBundle\Form\CategoryType', $category);
+        $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $image = $category->getImage();
-            $imageName = md5(uniqid()).'.'.$image->guessExtension();
-            $image->move($this->getParameter('category_image'), $imageName);
+            $imageName = $this->get('app.image_uploader')->upload($image);
             $category->setImage($imageName);
 
             $em = $this->getDoctrine()->getManager();
@@ -57,7 +57,7 @@ class CategoryController extends Controller
             return $this->redirectToRoute('category_index');
         }
 
-        return $this->render('category/new.html.twig', array(
+        return $this->render('@Administration/category/new.html.twig', array(
             'category' => $category,
             'form' => $form->createView(),
         ));
@@ -81,7 +81,7 @@ class CategoryController extends Controller
             return $this->redirectToRoute('category_index');
         }
 
-        return $this->render('category/edit.html.twig', array(
+        return $this->render('@Administration/category/edit.html.twig', array(
             'category' => $category,
             'edit_form' => $editForm->createView(),
         ));

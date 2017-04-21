@@ -10,4 +10,27 @@ namespace AdministrationBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findTopSellers()
+    {
+        $qb = $this->createQueryBuilder('p');
+            $qb->select('p')->orderBy('p.sold', 'desc')->setMaxResults(3);
+
+            return $qb->getQuery()->getResult();
+    }
+
+    public function findRecentProducts()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p')->orderBy('p.createdOn', 'desc')->setMaxResults(4);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findPromotion()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p')->orderBy('p.discount', 'desc')->setMaxResults(4);
+
+        return $qb->getQuery()->getResult();
+    }
 }

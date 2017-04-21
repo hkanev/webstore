@@ -3,6 +3,7 @@
 namespace AdministrationBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\SecurityBundle\Tests\Functional\Bundle\AclBundle\Entity\Car;
 use Symfony\Component\DomCrawler\Form;
@@ -22,6 +23,9 @@ class OrderController extends Controller
    public function addToCart(Product $product, Request $request)
    {
        $user = $this->getUser();
+       if($user == null){
+            return $this->redirectToRoute('security_login');
+       }
        $order = new Orders();
        $order->setUser($user);
        $order->setProduct($product);
@@ -31,7 +35,7 @@ class OrderController extends Controller
        $em->persist($order);
        $em->flush();
 
-       return $this->redirectToRoute('webstore_index');
+       return $this->redirectToRoute('products_shop_list');
    }
 
     /**
@@ -39,7 +43,13 @@ class OrderController extends Controller
      */
    public function showCart()
    {
-      $orders = $this->getOrders();
+       $user = $this->getUser();
+       if($user == null){
+           return $this->redirectToRoute('security_login');
+       }
+
+      $orderRepo = $this->getDoctrine()->getRepository(Orders::class);
+      $orders = $orderRepo->findOrders($user);
       $totalPrice = $this->setTotalPrice($orders);
 
       return $this->render('order/my_cart.html.twig', ['orders' => $orders, 'totalprice' => $totalPrice]);
@@ -51,11 +61,11 @@ class OrderController extends Controller
    public function order(Request $request)
    {
        $user = $this->getUser();
-
-       $checkout = new Checkout();
-       $orders = $this->getOrders();
+       $orderRepo = $this->getDoctrine()->getRepository(Orders::class);
+       $orders = $orderRepo->findOrders($user);
        $totalPrice = $this->setTotalPrice($orders);
 
+       $checkout = new Checkout();
        foreach($orders as $order){
           $order->setCheckout($checkout);
        }
@@ -64,7 +74,7 @@ class OrderController extends Controller
        if($cash < 0){
            throw new \Exception("Not enough money");
        }
-       $user->setCash();
+       $user->setCash($cash);
        $checkout->setTotalPrice($totalPrice);
 
        $em = $this->getDoctrine()->getManager();
@@ -72,7 +82,7 @@ class OrderController extends Controller
        $em->persist($user);
        $em->flush();
 
-       return $this->redirectToRoute('webstore_index');
+       return $this->redirectToRoute('products_shop_list');
    }
 
    private function getOrders()

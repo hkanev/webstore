@@ -25,20 +25,7 @@ class ProductController extends Controller
     public function listAction()
     {
         $products = $this->getDoctrine()->getRepository(Product::class)->findBy([], ['price' => 'desc', 'name' => 'asc      ']);
-        return $this->render('products/list.html.twig', ['products' => $products]);
-    }
-
-    /**
-     * @Route("/products/view/{id}", name="product_view")
-     * @param Product $product
-     * @return Response
-     */
-    public function viewAction(Product $product)
-    {
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
-        $form = $this->createForm(ProductType::class, $product);
-
-        return $this->render('products/view.html.twig', ['form' => $form->createView() , 'product' => $product , 'categories' => $categories]);
+        return $this->render('@Administration/products/list.html.twig', ['products' => $products]);
     }
 
     /**
@@ -48,7 +35,7 @@ class ProductController extends Controller
     public function createAction()
     {
         $form = $this->createForm(ProductType::class);
-        return $this->render('products/create.html.twig',
+        return $this->render('@Administration/products/create.html.twig',
             [
                 'form' => $form->createView()
             ]
@@ -66,9 +53,9 @@ class ProductController extends Controller
         $form->handleRequest($request);
 
         if($form->isValid()){
+
             $image = $product->getImage();
-            $imageName = md5(uniqid()).'.'.$image->guessExtension();
-            $image->move($this->getParameter('images_products'), $imageName);
+            $imageName = $this->get('app.image_uploader')->upload($image);
             $product->setImage($imageName);
 
             $em = $this->getDoctrine()->getManager();
@@ -79,7 +66,7 @@ class ProductController extends Controller
 
             return $this->redirectToRoute("products_list");
         }
-        return $this->render('products/create.html.twig',
+        return $this->render('@Administration/products/create.html.twig',
             [
                 'form' => $form->createView()
             ]
@@ -96,7 +83,7 @@ class ProductController extends Controller
     {
         $form = $this->createForm(ProductType::class, $product);
 
-        return $this->render('products/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('@Administration/products/edit.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -119,7 +106,7 @@ class ProductController extends Controller
             $this->addFlash("info", "Product with name ". $product->getName(). " was edited successfully!");
             return $this->redirectToRoute("products_list");
         }
-        return $this->render('products/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('@Administration/products/edit.html.twig', ['form' => $form->createView()]);
     }
 
     /**

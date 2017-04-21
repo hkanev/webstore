@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Category
  *
  * @ORM\Table(name="categories")
- * @ORM\Entity(repositoryClass="WebstoreBundle\Repository\CategoryRepository")
+ * @ORM\Entity(repositoryClass="AdministrationBundle\Repository\CategoryRepository")
  */
 class Category
 {
@@ -53,7 +53,7 @@ class Category
 
     /**
      * @var Product[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="WebstoreBundle\Entity\Product", mappedBy="categories")
+     * @ORM\OneToMany(targetEntity="AdministrationBundle\Entity\Product", mappedBy="categories")
      */
     private $products;
 

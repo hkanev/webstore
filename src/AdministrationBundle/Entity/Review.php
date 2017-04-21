@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Review
  *
  * @ORM\Table(name="reviews")
- * @ORM\Entity(repositoryClass="WebstoreBundle\Repository\ReviewRepository")
+ * @ORM\Entity(repositoryClass="AdministrationBundle\Repository\ReviewRepository")
  */
 class Review
 {
@@ -37,7 +37,7 @@ class Review
 
     /**
      * @var Product
-     * @ORM\ManyToOne(targetEntity="WebstoreBundle\Entity\Product", inversedBy="reviews")
+     * @ORM\ManyToOne(targetEntity="AdministrationBundle\Entity\Product", inversedBy="reviews")
      */
     private $product;
 

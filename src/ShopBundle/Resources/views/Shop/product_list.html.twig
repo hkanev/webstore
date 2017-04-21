@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
+{% block container %}
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="single-sidebar">
+                <form action="" method="get" class="form-horizontal" id="myForm">
+                    <div class="form-group">
+                        <label for="sort_list" class=control-label">Sort by: </label>
+                        <select class="form-control" style="width: 30%; display: inline-block;" id="sort_list" name="option" onchange="this.form.submit()">
+                            <option></option>
+                            <option value="recent">Recent</option>
+                            <option value="price_asc">Price asc</option>
+                            <option value="price_desc">Price desc</option>
+                            <option value="top_sellers">Top sellers</option>
+                        </select>
+                    </div>
+                </form>
+                </div>
+                {{ render(controller('ShopBundle:Shop:navigation')) }}
+            </div>
+            <div class="col-sm-9">
+                {% for product in pagination %}
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-shop-product">
+                        <div class="product-upper">
+                            <a href="{{ path('product_view', {'id': product.id}) }}"><img src="{{ asset('img/product-1.jpg') }}" alt=""></a>
+                        </div>
+                        <h2><a href="{{ path('product_view', {'id': product.id}) }}">{{ product.name }}</a></h2>
+                        <div class="product-carousel-price">
+                            {% if product.discount is null %}
+                                <ins>{{ product.price }}</ins>
+                            {% else %}
+                                <ins>{{ product.discount }}</ins>
+                                <del>{{ product.price }}</del>
+                            {% endif %}
+                        </div>
+
+                        <div class="product-option-shop">
+                            <a class="add_to_cart_button" data-quantity="1"  href="{{ path('add_to_cart', {'id': product.id}) }}">Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

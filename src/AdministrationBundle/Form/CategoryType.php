@@ -2,6 +2,7 @@
 
 namespace AdministrationBundle\Form;
 
+use AdministrationBundle\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,15 +26,7 @@ class CategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'WebstoreBundle\Entity\Category'
+            'data_class' => Category::class
         ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'webstorebundle_category';
     }
 }

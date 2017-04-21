@@ -1,0 +1,20 @@
+<div class="single-sidebar">
+    {% for category in categories %}
+        <div>
+            <a href="{{ path('products_category_list', {'id': category.id}) }}"><img src="{{ asset('uploads/' ~category.image) }}" alt=""></a>
+        </div>
+    {% endfor %}
+    <div class="single-sidebar">
+        <h2 class="sidebar-title">  Top Sellers</h2>
+        {% for product in topSellers %}
+            <div class="thubmnail-recent">
+                <img src="{{ asset('uploads/'~product.image)}}" class="recent-thumb" width="63"  height="63" alt="">
+                <h2><a href="">{{ product.name }}</a></h2>
+                <h2><a href="">{{ product.category.name }}</a></h2>
+                <div class="product-sidebar-price">
+                    <ins>{{ product.price }}</ins>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
  * Product
  *
  * @ORM\Table(name="products")
- * @ORM\Entity(repositoryClass="WebstoreBundle\Repository\ProductRepository")
+ * @ORM\Entity(repositoryClass="AdministrationBundle\Repository\ProductRepository")
  */
 class Product
 {
@@ -63,15 +63,17 @@ class Product
     private $createdOn;
 
     /**
-     * @var Review[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="WebstoreBundle\Entity\Review", mappedBy="product")
+     * @var boolean
+     * @ORM\Column(name="on_sale", type="boolean", nullable=false)
      */
-    private $reviews;
+    private $onSale;
 
     /**
-     * @ORM\ManyToOne(targetEntity="WebstoreBundle\Entity\Category", inversedBy="category")
+     * @var string
+     *
+     * @ORM\Column(name="discount", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $category;
+    private $discount;
 
     /**
      * @ORM\Column(type="string")
@@ -79,27 +81,27 @@ class Product
      */
     private $image;
 
-//    /**
-//     * @ORM\ManyToMany(targetEntity="WebstoreBundle\Entity\Cart", mappedBy="products")
-//     */
-//    private $carts;
+    /**
+     * @var Review[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AdministrationBundle\Entity\Review", mappedBy="product")
+     */
+    private $reviews;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AdministrationBundle\Entity\Category", inversedBy="category")
+     */
+    private $category;
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="WebstoreBundle\Entity\Orders", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="AdministrationBundle\Entity\Orders", mappedBy="product")
      */
-    private $order;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="discount", type="decimal", precision=10, scale=2)
-     */
-    private $discount;
+     private $order;
 
     function __construct()
     {
         $this->createdOn = new \DateTime();
+        $this->onSale = true;
         $this->reviews = new ArrayCollection();
         $this->order = new ArrayCollection();
     }
@@ -218,7 +220,6 @@ class Product
         $this->reviews = $reviews;
     }
 
-
     /**
      * @return mixed
      */
@@ -268,21 +269,67 @@ class Product
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getCarts()
+    public function getSold()
     {
-        return $this->carts;
+        return $this->sold;
     }
 
     /**
-     * @param mixed $carts
+     * @param int $sold
      */
-    public function setCarts($carts)
+    public function setSold($sold)
     {
-        $this->carts = $carts;
+        $this->sold = $sold;
     }
 
-    
+    /**
+     * @return bool
+     */
+    public function isOnSale()
+    {
+        return $this->onSale;
+    }
+
+    /**
+     * @param bool $onSale
+     */
+    public function setOnSale($onSale)
+    {
+        $this->onSale = $onSale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
+    }
+
+    /**
+     * @param string $discount
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param ArrayCollection $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
 }
 

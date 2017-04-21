@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Checkout
  *
- * @ORM\Table(name="checkout")
- * @ORM\Entity(repositoryClass="WebstoreBundle\Repository\CheckoutRepository")
+ * @ORM\Table(name="checkouts")
+ * @ORM\Entity(repositoryClass="AdministrationBundle\Repository\CheckoutRepository")
  */
 class Checkout
 {
@@ -44,7 +44,7 @@ class Checkout
     private $totalPrice;
 
     /**
-     * @ORM\OneToMany(targetEntity="WebstoreBundle\Entity\Orders", mappedBy="checkout")
+     * @ORM\OneToMany(targetEntity="AdministrationBundle\Entity\Orders", mappedBy="checkout")
      */
     private $orders;
 

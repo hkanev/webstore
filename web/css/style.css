@@ -415,8 +415,8 @@ margin-bottom: 20px;}
   text-decoration: none;border-color: #444;
 }
 .product-carousel-price ins {
-  color: #5a88ca;
-  font-weight: 700;
+  color: gray;
+  font-weight: 550;
   margin-right: 5px;
   text-decoration: none;
 }
@@ -1123,4 +1123,14 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .pagination > li > a, .pagination > li > span {
   color: #5a88ca;
+}
+
+#product_index_header{
+
+    display: inline-block;
+}
+
+#product_index_header a {
+    text-decoration: none;
+    color: black;
 }

@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new ShopBundle\ShopBundle(),
             new UserBundle\UserBundle(),
             new AdministrationBundle\AdministrationBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
