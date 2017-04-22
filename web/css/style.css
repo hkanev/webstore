@@ -1134,3 +1134,17 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     text-decoration: none;
     color: black;
 }
+
+#form-sort{
+    margin-left: 10px;
+}
+
+#form-sort a{
+    float: right;
+    margin-right: 60px;
+}
+
+#sort_list{
+    width: 10%;
+    display: inline-block;
+}

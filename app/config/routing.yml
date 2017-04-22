@@ -13,3 +13,6 @@ shop:
     type:     annotation
     prefix:   /
 
+kms_froala_editor:
+    resource: "@KMSFroalaEditorBundle/Resources/config/routing.yml"
+    prefix:   /froalaeditor

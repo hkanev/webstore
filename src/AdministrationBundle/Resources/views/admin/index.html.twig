@@ -18,7 +18,7 @@
                   </div>
                   <div class="navbar-collapse collapse">
                       <ul class="nav navbar-nav">
-                          <li class="active"><a href="{{ path('webstore_index') }}">Home</a></li>
+                          <li class="active"><a href="{{ path('shop_index') }}">Home</a></li>
                           <li><a href="{{ path('users_list') }}">Users</a></li>
                           <li><a href="{{ path('products_list') }}">Products</a></li>
                           <li><a href="{{ path('category_index') }}">Categories</a></li>
@@ -32,13 +32,13 @@
 {% block main %}
     <div class="container body-content span=8 offset=2">
         <fieldset>
-        <legend>Admin Panel</legend>
+        <legend>Statistic</legend>
         <div class="well">
-          <strong>Users:</strong> {{ users }}
+          <strong>Users:</strong> {{ users|length }}
             <br>
-            <strong>Products:</strong> {{ products }}
+            <strong>Products:</strong> {{ products|length }}
             <br>
-            <strong>Categories:</strong> {{ categories }}
+            <strong>Categories:</strong> {{ categories|length }}
         </div>
         </fieldset>
     </div>

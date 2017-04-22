@@ -19,4 +19,29 @@ class OrdersRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findCompleteOrders(User $user)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $qb->select('o')->where('o.checkout IS NOT NUll')->andWhere('o.user = :usr')->setParameter('usr', $user);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllOrders()
+    {
+        $qb = $this->createQueryBuilder('o');
+        $qb->select('o')->where('o.checkout IS  NUll');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllCompleteOrders()
+    {
+        $qb = $this->createQueryBuilder('o');
+        $qb->select('o')->where('o.checkout IS NOT NUll');
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

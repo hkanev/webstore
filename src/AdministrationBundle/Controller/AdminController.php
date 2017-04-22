@@ -7,8 +7,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use AdministrationBundle\Entity\User;
-use AdministrationBundle\Form\UserType;
+use Symfony\Component\HttpFoundation\Request;
+use UserBundle\Entity\User;
+use UserBundle\Form\UserType;
 
 
 /**
@@ -25,11 +26,11 @@ class AdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $categories = count($em->getRepository('WebstoreBundle:Category')->findAll());
-        $products = count($em->getRepository('WebstoreBundle:Product')->findAll());
-        $users = count($em->getRepository('WebstoreBundle:User')->findAll());
+        $categories = ($em->getRepository('AdministrationBundle:Category')->findAll());
+        $products = $em->getRepository('AdministrationBundle:Product')->findProducts();
+        $users = ($em->getRepository('UserBundle:User')->findAll());
 
-        return $this->render('admin/index.html.twig', array(
+        return $this->render('@Administration/admin/index.html.twig', array(
             'categories' => $categories, 'products' => $products, 'users' => $users
         ));
     }
@@ -38,10 +39,17 @@ class AdminController extends Controller
      * @Route("/admin/users/", name="users_list")
      * @Security("has_role('ROLE_ADMIN', 'ROLE_EDITOR')")
      */
-    public function listUserAction()
+    public function listUserAction(Request $request)
     {
-        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
-        return $this->render('admin/list_user.html.twig', ['users' => $users]);
+        $query = $this->getDoctrine()->getRepository(User::class)->createQueryBuilder('u')
+            ->select('u')->orderBy('u.cash', 'asc');
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query->getQuery(), $request->query->getInt('page', 1),
+            12
+        );
+        return $this->render('@Administration/admin/list_user.html.twig', ['pagination' => $pagination]);
     }
 
     /**
@@ -53,7 +61,7 @@ class AdminController extends Controller
     {
         $form = $this->createForm(UserType::class, $user);
 
-        return $this->render('admin/view_user.html.twig', ['form' => $form->createView() , 'user' => $user]);
+        return $this->render('@Administration/admin/view_user.html.twig', ['form' => $form->createView() , 'user' => $user]);
     }
 
     /**

@@ -44,7 +44,7 @@ class ShopController extends Controller
      */
     public function productsShow(Request $request)
     {
-        $query = $this->buildSortableQuery($request->get('option'));
+        $query = $this->buildSortableQuery($request->get('option'))->where('p.onSale = 1');
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query->getQuery(), $request->query->getInt('page', 1),
@@ -58,8 +58,8 @@ class ShopController extends Controller
      */
     public function productByCategory(Category $category, Request $request)
     {
-        $query = $this->buildSortableQuery($request->get('option'));
-        $query->where('p.category = :cat')->setParameter('cat', $category);
+        $query = $this->buildSortableQuery($request->get('option'))->where('p.onSale = 1');
+        $query->andWhere('p.category = :cat')->setParameter('cat', $category);
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query->getQuery(), $request->query->getInt('page', 1),

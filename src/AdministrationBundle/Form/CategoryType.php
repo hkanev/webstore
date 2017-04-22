@@ -26,7 +26,8 @@ class CategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => Category::class
+            'data_class' => Category::class,
+            'novalidate'=>'novalidate'
         ));
     }
 }

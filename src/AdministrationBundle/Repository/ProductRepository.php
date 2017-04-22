@@ -13,7 +13,7 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     public function findTopSellers()
     {
         $qb = $this->createQueryBuilder('p');
-            $qb->select('p')->orderBy('p.sold', 'desc')->setMaxResults(3);
+            $qb->select('p')->where('p.onSale = 1')->orderBy('p.sold', 'desc')->setMaxResults(3);
 
             return $qb->getQuery()->getResult();
     }
@@ -21,7 +21,7 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     public function findRecentProducts()
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->select('p')->orderBy('p.createdOn', 'desc')->setMaxResults(4);
+        $qb->select('p')->where('p.onSale = 1')->orderBy('p.createdOn', 'desc')->setMaxResults(4);
 
         return $qb->getQuery()->getResult();
     }
@@ -29,7 +29,15 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     public function findPromotion()
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->select('p')->orderBy('p.discount', 'desc')->setMaxResults(4);
+        $qb->select('p')->where('p.onSale = 1')->orderBy('p.discount', 'desc')->setMaxResults(4);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findProducts()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p')->where('p.onSale = 1')->orderBy('p.createdOn', 'desc');
 
         return $qb->getQuery()->getResult();
     }

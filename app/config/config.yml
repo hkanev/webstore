@@ -10,8 +10,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    images_products: '%kernel.root_dir%/../web/uploads/products'
-    category_image: '%kernel.root_dir%/../web/uploads/categories'
+    images: '%kernel.root_dir%\..\web\uploads\'
 
 framework:
     #esi: ~
@@ -38,7 +37,8 @@ framework:
     assets: ~
     php_errors:
         log: true
-
+    templating:
+        engines: ['twig', 'php']
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
@@ -87,3 +87,10 @@ knp_paginator:
         pagination: 'KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig'     # sliding pagination controls template
 #        sortable: 'KnpPaginatorBundle:Pagination:sortable_link.html.twig' # sort link template
         sortable: 'ShopBundle:Shop:sort_select.html.twig' # sort link template
+
+kms_froala_editor:
+
+  language: "en"
+  toolbarInline: true
+  tableColors: [ "#FFFFFF", "#FF0000" ]
+  saveParams: { "id" : "myEditorField" }

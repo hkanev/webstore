@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use UserBundle\Entity\Role;
 use UserBundle\Entity\User;
+use UserBundle\Form\ChangePassword;
+use UserBundle\Form\UserEditType;
 use UserBundle\Form\UserType;
 
 class UserController extends Controller
@@ -42,6 +44,10 @@ class UserController extends Controller
 
             $user->addRole($role);
 
+            if($user->getPassword() == null){
+
+            }
+
             // 5) save the User!
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -69,11 +75,7 @@ class UserController extends Controller
         $user = $this->getUser();
         $user->getRoles();
 
-        if(null === $user){
-            return $this->redirectToRoute('webstore_index');
-        }
-
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserEditType::class, $user);
 
         $roleRepo = $this->getDoctrine()->getRepository(Role::class);
         $roles = $roleRepo->findAll();
@@ -84,10 +86,37 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash("info", "User ". $user->getUsername(). " edited!");
-            return $this->redirectToRoute('webstore_index');
+            return $this->redirectToRoute('user_profile');
         }
 
-        return $this->render('user/edit.html.twig', array('user' => $user,
+        return $this->render('@User/user/register.html.twig', array('user' => $user,
+            'form' => $form->createView()));
+    }
+
+    /**
+    * @Route("profile/change_password", name="user_change_password")
+    * @param Request $request
+    * @return Response
+    */
+    public function changePassword(Request $request)
+    {
+        $user = $this->getUser();
+
+        $form = $this->createForm(ChangePassword::class, $user);
+        $form->handleRequest($request);
+
+        if( $form->isSubmitted() && $form->isValid())    {
+            $password = $this->get('security.password_encoder')
+                ->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash("info", "User ". $user->getUsername(). " edited!");
+            return $this->redirectToRoute('user_profile');
+        }
+
+        return $this->render('@User/user/register.html.twig', array('user' => $user,
             'form' => $form->createView()));
     }
 
@@ -99,6 +128,6 @@ class UserController extends Controller
     {
         $user = $this->getUser();
 
-        return $this->render("user/profile.html.twig", ['user'=>$user]);
+        return $this->render("@User/user/profile.html.twig", ['user'=>$user]);
     }
 }

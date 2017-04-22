@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new UserBundle\UserBundle(),
             new AdministrationBundle\AdministrationBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new KMS\FroalaEditorBundle\KMSFroalaEditorBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

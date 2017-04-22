@@ -6,7 +6,9 @@ use AdministrationBundle\Entity\Category;
 use AdministrationBundle\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Category controller.
@@ -21,15 +23,17 @@ class CategoryController extends Controller
      * @Route("/", name="category_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $query = $this->getDoctrine()->getRepository(Category::class)->createQueryBuilder('c')
+            ->select('c')->orderBy('c.name', 'desc');
 
-        $categories = $em->getRepository('WebstoreBundle:Category')->findAll();
-
-        return $this->render('category/index.html.twig', array(
-            'categories' => $categories,
-        ));
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query->getQuery(), $request->query->getInt('page', 1),
+            12
+        );
+        return $this->render('@Administration/category/index.html.twig',['pagination' => $pagination] );
     }
 
     /**
@@ -71,10 +75,20 @@ class CategoryController extends Controller
      */
     public function editAction(Request $request, Category $category)
     {
-        $editForm = $this->createForm('WebstoreBundle\Form\CategoryType', $category);
+        $oldImage = $category->getImage();
+        $editForm = $this->createForm(CategoryType::class, $category);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $image = $category->getImage();
+            if($image == null){
+               $image = new File($this->getParameter('images').$oldImage);
+                $imageName = $this->get('app.image_uploader')->upload($image);
+            } else {
+                $imageName = $this->get('app.image_uploader')->upload($image);
+            }
+            $category->setImage($imageName);
+            $this->getDoctrine()->getManager()->persist($category);
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash("info", "Category ". $category->getName(). " edited!");

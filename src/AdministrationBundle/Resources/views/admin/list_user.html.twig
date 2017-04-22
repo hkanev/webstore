@@ -13,19 +13,21 @@
                     <thead >
                     <tr>
                         <th class="text-center">Id</th>
-                        <th class="text-center">Username</th>
                         <th class="text-center">Email</th>
+                        <th class="text-center">Cash</th>
+                        <th class="text-center">adress</th>
                         <th class="text-center">Telephone</th>
                         <th class="text-center">City</th>
+                        <th class="text-center">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for user in users %}
+                    {% for user in pagination %}
                         <tr>
                             <td>{{ user.id }}</td>
-                            <td><a href="{{ path('users_view', {'id': user.id}) }}">{{ user.username|slice(0,30) }}</a></td>
-                            <td>{{ user.username }}</td>
-                            <td>{{user.email }}</td>
+                            <td><a href="{{ path('users_view', {'id': user.id}) }}">{{ user.email|slice(0,100) }}</a></td>
+                            <td>{{user.cash }}</td>
+                            <td>{{user.address|slice(0,50) }}</td>
                             <td>{{user.telephone }}</td>
                             <td>{{user.city }}</td>
                             <td>
