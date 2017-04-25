@@ -41,16 +41,13 @@
                                     </div>
 
                                     <form action="{{ path('add_to_cart', {'id': product.id}) }}" class="cart">
-                                        <div class="quantity">
-                                            <input type="number" size="4" class="input-text qty text" title="Qty"
-                                                   value="1" name="productQuantity" min="1" step="1">
-                                        </div>
+                                        <input type="number" name="quantity" />
                                         <button class="add_to_cart_button" type="submit">Add to cart</button>
                                     </form>
 
                                     <div class="product-inner-category">
-                                        <p>Category: <a href="{{  path('products_category_list', {'id': product.category.id}) }}">{{ product.category }}</a>. Tags: <a href="">awesome</a>, <a href="">best</a>,
-                                            <a href="">sale</a>, <a href="">shoes</a>. </p>
+                                        <p>Category: <a href="{{  path('products_category_list', {'id': product.category.id}) }}">{{ product.category }}</a>
+                                            Quantity: {{ product.quantity }} </p>
                                     </div>
                             </div>
                         </div>
@@ -66,7 +63,7 @@
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane fade in active" id="home">
                                     <h2>Product Description</h2>
-                                    <p>{{ product.description }}</p>
+                                    <p>{{ product.description|raw }}</p>
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="profile">
                                     <h2>Reviews</h2>
@@ -99,6 +96,5 @@
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}
 

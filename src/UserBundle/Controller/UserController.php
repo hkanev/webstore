@@ -2,6 +2,8 @@
 
 namespace UserBundle\Controller;
 
+use AdministrationBundle\Entity\Checkout;
+use AdministrationBundle\Entity\Orders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -127,7 +129,9 @@ class UserController extends Controller
     public function profileAction()
     {
         $user = $this->getUser();
+        $orderRepo = $this->getDoctrine()->getRepository(Orders::class);
+        $completeOrders = $orderRepo->findCompleteOrders($user);
 
-        return $this->render("@User/user/profile.html.twig", ['user'=>$user]);
+        return $this->render("@User/user/profile.html.twig", ['user'=>$user , 'completeOrders' => $completeOrders]);
     }
 }

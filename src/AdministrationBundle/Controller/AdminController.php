@@ -3,19 +3,23 @@
 namespace AdministrationBundle\Controller;
 
 
+use AdministrationBundle\Form\AdminUserEditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use UserBundle\Entity\Role;
 use UserBundle\Entity\User;
+use UserBundle\Form\ChangePassword;
 use UserBundle\Form\UserType;
 
 
 /**
  * Class AdminController
  * @package WebstoreBundle\Controller
- * @Security("has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_ADMIN') | has_role('ROLE_EDITOR')")
+ *
  */
 class AdminController extends Controller
 {
@@ -37,7 +41,7 @@ class AdminController extends Controller
 
     /**
      * @Route("/admin/users/", name="users_list")
-     * @Security("has_role('ROLE_ADMIN', 'ROLE_EDITOR')")
+     * @Security("has_role('ROLE_ADMIN') | has_role('ROLE_EDITOR')")
      */
     public function listUserAction(Request $request)
     {
@@ -53,6 +57,27 @@ class AdminController extends Controller
     }
 
     /**
+     * @Route("/admin/users/edit/{id}", name="admin_user_edit")
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function adminEditUser(User $user, Request $request)
+    {
+        $form = $this->createForm(AdminUserEditType::class, $user);
+        $form->handleRequest($request);
+
+        if( $form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash("info", "User ". $user->getUsername(). " edited!");
+            return $this->redirectToRoute('users_list');
+        }
+        return $this->render('@User/user/register.html.twig', array('user' => $user,
+            'form' => $form->createView()));
+    }
+
+    /**
      * @Route("/admin/users/{id}", name="users_view")
      * @param User $user
      * @return \Symfony\Component\HttpFoundation\Response
@@ -65,16 +90,26 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admin/users/delete/{id}", name="user_delete")
-     * @Method("POST")
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/admin/users/{id}/change_password", name="admin_change_password")
      */
-    public function deleteUserAction(User $user)
+    public function changePassword(User $user, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($user);
-        $em->flush();
-        $this->addFlash("info", "User ". $user->getUsername(). " deleted!");
-        return $this->redirectToRoute("users_list");
+        $form = $this->createForm(ChangePassword::class, $user);
+        $form->handleRequest($request);
+
+        if( $form->isSubmitted() && $form->isValid())    {
+            $password = $this->get('security.password_encoder')
+                ->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash("info", "User ". $user->getUsername(). " edited!");
+            return $this->redirectToRoute('users_view', ['id' => $user->getId()]);
+        }
+
+        return $this->render('@User/user/register.html.twig', array('user' => $user,
+            'form' => $form->createView()));
     }
 }

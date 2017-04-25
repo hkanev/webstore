@@ -4,6 +4,7 @@ namespace AdministrationBundle\Controller;
 
 use AdministrationBundle\Entity\Category;
 use AdministrationBundle\Form\CategoryType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Category controller.
- *
+ * @Security("has_role('ROLE_ADMIN') | has_role('ROLE_EDITOR')")
  * @Route("category")
  */
 class CategoryController extends Controller
@@ -26,7 +27,7 @@ class CategoryController extends Controller
     public function indexAction(Request $request)
     {
         $query = $this->getDoctrine()->getRepository(Category::class)->createQueryBuilder('c')
-            ->select('c')->orderBy('c.name', 'desc');
+            ->select('c')->where('c.deleted = 0')->orderBy('c.name', 'desc');
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -110,7 +111,8 @@ class CategoryController extends Controller
     public function deleteAction(Category $category)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($category);
+        $category->setDeleted(1);
+        $em->persist($category);
         $em->flush();
         $this->addFlash("info", "Category ". $category->getName(). " deleted!");
         return $this->redirectToRoute("category_index");

@@ -16,7 +16,7 @@ use AdministrationBundle\Form\ProductType;
 /**
  * Class ProductController
  * @package WebstoreBundle\Controller
- * @Security("has_role('ROLE_ADMIN', 'ROLE_EDITOR')")
+ * @Security("has_role('ROLE_ADMIN') | has_role('ROLE_EDITOR')")
  */
 class ProductController extends Controller
 {

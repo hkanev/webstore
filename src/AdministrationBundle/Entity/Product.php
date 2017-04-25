@@ -4,7 +4,7 @@ namespace AdministrationBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -33,6 +33,7 @@ class Product
     /**
      * @var integer
      * @ORM\Column(name="quantity", type="integer")
+     * @Assert\Range(min="0")
      */
     private $quantity;
 
@@ -45,7 +46,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100, unique=true)
+     * @ORM\Column(name="name", type="string", length=100)
      */
     private $name;
 
@@ -76,6 +77,13 @@ class Product
     private $discount;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="seller", type="string", nullable=false)
+     */
+    private $seller;
+
+    /**
      * @ORM\Column(type="string")
      *
      */
@@ -104,6 +112,7 @@ class Product
         $this->onSale = true;
         $this->reviews = new ArrayCollection();
         $this->order = new ArrayCollection();
+        $this->seller = 'FoxMobile';
     }
 
     /**
@@ -330,6 +339,22 @@ class Product
     public function setOrder($order)
     {
         $this->order = $order;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSeller(): string
+    {
+        return $this->seller;
+    }
+
+    /**
+     * @param string $seller
+     */
+    public function setSeller(string $seller)
+    {
+        $this->seller = $seller;
     }
 }
 

@@ -44,6 +44,17 @@ class Orders
     private $checkout;
 
     /**
+     * @var boolean
+     * @ORM\Column(name="deleted", type="boolean", nullable=false)
+     */
+    private $deleted;
+
+    function __construct()
+    {
+        $this->deleted = false;
+    }
+
+    /**
      * @return mixed
      */
     public function getProduct()
@@ -120,6 +131,23 @@ class Orders
     {
         $this->checkout = $checkout;
     }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param bool $deleted
+     */
+    public function setDeleted(bool $deleted)
+    {
+        $this->deleted = $deleted;
+    }
+
 
 }
 

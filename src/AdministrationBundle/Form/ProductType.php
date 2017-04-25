@@ -33,9 +33,4 @@ class ProductType extends AbstractType
             ]
         );
     }
-
-    public function getBlockPrefix()
-    {
-        return 'webstore_bundle_product_type';
-    }
 }

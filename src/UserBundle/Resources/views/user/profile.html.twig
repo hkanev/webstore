@@ -57,4 +57,24 @@
         <strong>Canceled orders: </strong> 1
     </div>
 </div>
+    <div class="container col-sm-6">
+        <div class="well">
+            <h2>Bought products</h2>
+            {% for order in completeOrders %}
+                <table>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>{{ order.product.getName }}</td>
+                        <td>{{ order.product.getPrice }}</td>
+                        <td><a href="{{ path('user_sell_product_form', {'id': order.id}) }}">Sell product</a></td>
+                    </tr>
+                </table>
+            {% endfor %}
+
+        </div>
+    </div>
 {% endblock %}

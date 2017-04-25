@@ -28,11 +28,11 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        $this->buildCategory($manager, 'Nokia', 'nokia.png');
-        $this->buildCategory($manager, 'Apple', 'apple.png');
-        $this->buildCategory($manager, 'LG', 'lg.png');
-        $this->buildCategory($manager, 'HTC', 'htc.png');
-        $this->buildCategory($manager, 'Samsung', 'samsung.png');
+        $this->buildCategory($manager, 'Nokia', 'cnokia.png');
+        $this->buildCategory($manager, 'Apple', 'capple.png');
+        $this->buildCategory($manager, 'LG', 'clg.png');
+        $this->buildCategory($manager, 'HTC', 'chtc.png');
+        $this->buildCategory($manager, 'Samsung', 'csamsung.png');
     }
 
     /**

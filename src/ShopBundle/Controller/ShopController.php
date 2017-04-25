@@ -44,7 +44,7 @@ class ShopController extends Controller
      */
     public function productsShow(Request $request)
     {
-        $query = $this->buildSortableQuery($request->get('option'))->where('p.onSale = 1');
+        $query = $this->buildSortableQuery($request->get('option'));
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query->getQuery(), $request->query->getInt('page', 1),
@@ -58,7 +58,7 @@ class ShopController extends Controller
      */
     public function productByCategory(Category $category, Request $request)
     {
-        $query = $this->buildSortableQuery($request->get('option'))->where('p.onSale = 1');
+        $query = $this->buildSortableQuery($request->get('option'));
         $query->andWhere('p.category = :cat')->setParameter('cat', $category);
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -79,28 +79,35 @@ class ShopController extends Controller
         $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
         $form = $this->createForm(ProductType::class, $product);
 
-        return $this->render('@Shop/Shop/product.html.twig', ['form' => $form->createView() , 'product' => $product , 'categories' => $categories]);
+        return $this->render('@Shop/Shop/product.html.twig',
+            ['form' => $form->createView() , 'product' => $product , 'categories' => $categories]);
     }
 
 
     private function buildSortableQuery($sort)
     {
+        $seller = 'FoxMobile';
         switch($sort) {
             case 'price_asc':
                 return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
-                    ->select('p')->orderBy('p.price', 'desc');
+                    ->select('p')->where('p.seller = :sell')->andWhere('p.onSale = 1')->orderBy('p.price', 'asd')
+                    ->setParameter('sell', $seller);
             case 'price_desc':
-                return   $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
-                    ->select('p')->orderBy('p.price', 'asc');
+                return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
+                    ->select('p')->where('p.seller = :sell')->andWhere('p.onSale = 1')->orderBy('p.price', 'desc')
+                    ->setParameter('sell', $seller);
             case 'recent':
                 return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
-                    ->select('p')->orderBy('p.createdOn', 'desc');
+                    ->select('p')->where('p.seller = :sell')->andWhere('p.onSale = 1')->orderBy('p.createdOn', 'desc')
+                    ->setParameter('sell', $seller);
             case 'top_sellers':
                 return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
-                    ->select('p')->orderBy('p.sold', 'desc');
+                    ->select('p')->where('p.seller = :sell')->andWhere('p.onSale = 1')->orderBy('p.sold', 'desc')
+                    ->setParameter('sell', $seller);
             default:
-               return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
-                    ->select('p')->orderBy('p.createdOn', 'desc');
+                return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
+                    ->select('p')->where('p.seller = :sell')->andWhere('p.onSale = 1')->orderBy('p.createdOn', 'desc')
+                    ->setParameter('sell', $seller);
         }
     }
 }

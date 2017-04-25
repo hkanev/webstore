@@ -36,6 +36,12 @@ class Category
     private $image;
 
     /**
+     * @var boolean
+     * @ORM\Column(name="deleted", type="boolean", nullable=false)
+     */
+    private $deleted;
+
+    /**
      * @return mixed
      */
     public function getImage()
@@ -60,6 +66,7 @@ class Category
     function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->deleted = false;
     }
 
     /**
@@ -111,6 +118,21 @@ class Category
         $this->products = $products;
     }
 
+    /**
+     * @return bool
+     */
+    public function isDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param bool $deleted
+     */
+    public function setDeleted(bool $deleted)
+    {
+        $this->deleted = $deleted;
+    }
 
     function __toString()
     {

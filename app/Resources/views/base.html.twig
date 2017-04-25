@@ -38,10 +38,10 @@
                             <ul>
                                 {% if app.user %}
                                 <li><a href="{{ path('user_profile') }}"><i class="fa fa-user"></i> My Account</a></li>
-                                <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
-                                <li><a href="#"><i class="fa fa-user"></i> My Cart</a></li>
-                                <li><a href="#"><i class="fa fa-user"></i> Checkout</a></li>
-
+                                <li><a href="{{ path('cart_show') }}"><i class="fa fa-user"></i> My Cart</a></li>
+                                    {% if is_granted("ROLE_ADMIN") or is_granted('ROLE_EDITOR') %}
+                                        <li><a href="{{ path('admin_show') }}"><i class="fa fa-user"></i> Admin Panel</a></li>
+                                    {% endif %}
                                 {% endif %}
                             </ul>
                         </div>
@@ -74,9 +74,11 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <div class="shopping-item">
-                            <a href="cart.html">Cart - <span class="cart-amunt">$100</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">5</span></a>
-                        </div>
+                        {% if app.user %}
+                            <div class="shopping-item">
+                                <a href="{{ path('cart_show') }}">Cart - <span class="cart-amunt">{{ app.user.cash }}$</span> <i class="fa fa-shopping-cart"></i> </a>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -98,14 +100,9 @@
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="{{ path('shop_index') }}">Home</a></li>
-                            <li><a href="{{ path('products_list') }}">Shop page</a></li>
-                            <li><a href="#">Cart</a></li>
-                            <li><a href="#">Checkout</a></li>
-                            <li><a href="#">Others</a></li>
+                            <li><a href="{{ path('products_shop_list') }}">Shop page</a></li>
+                            <li><a href="#">About us</a></li>
                             <li><a href="#">Contact</a></li>
-                            {% if is_granted("ROLE_ADMIN")  %}
-                                <li><a href="{{ path('admin_show') }}">Admin</a></li>
-                            {% endif %}
                         </ul>
                     </div>
                 </div>

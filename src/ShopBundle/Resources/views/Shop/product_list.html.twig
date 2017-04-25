@@ -31,9 +31,9 @@
                 <div class="col-md-3 col-sm-6">
                     <div class="single-shop-product">
                         <div class="product-upper">
-                            <a href="{{ path('product_view', {'id': product.id}) }}"><img src="{{ asset('img/product-1.jpg') }}" alt=""></a>
+                            <a href="{{ path('product_view', {'id': product.id}) }}"><img src="{{ asset('uploads/'~product.image)}}" alt=""></a>
                         </div>
-                        <h2><a href="{{ path('product_view', {'id': product.id}) }}">{{ product.name }}</a></h2>
+                        <h2><a href="{{ path('product_view', {'id': product.id}) }}">{{ product.category }} {{ product.name }}</a></h2>
                         <div class="product-carousel-price">
                             {% if product.discount is null %}
                                 <ins>{{ product.price }}</ins>
@@ -43,8 +43,8 @@
                             {% endif %}
                         </div>
 
-                        <div class="product-option-shop">
-                            <a class="add_to_cart_button" data-quantity="1"  href="{{ path('add_to_cart', {'id': product.id}) }}">Add to cart</a>
+                        <div class="">
+                            <a class="add_to_cart_button"   href="{{ path('add_to_cart', {'id': product.id} ) }}">Add to cart</a>
                         </div>
                     </div>
                 </div>
