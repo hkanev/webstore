@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -28,55 +29,59 @@ class User implements UserInterface
 
     /**
      * @var string
-     *
+     * @Assert\NotNull()
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
 
     /**
      * @var string
-     *
+     * @Assert\NotNull()
      * @ORM\Column(name="first_name", type="string", length=255)
      */
     private $firstName;
 
     /**
      * @var string
-     *
+     * @Assert\NotNull()
      * @ORM\Column(name="second_name", type="string", length=255)
      */
     private $secondName;
 
     /**
      * @var string
-     *
+     * @Assert\NotNull()
+     * @Assert\Email()
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
 
     /**
      * @var string
-     *
+     * @Assert\NotNull()
      * @ORM\Column(name="address", type="text")
      */
     private $address;
 
     /**
      * @var string
-     *
+     * @Assert\NotNull()
+     * @Assert\Length(min = 10, max="10")
+     * @Assert\Regex(pattern="/^[0-9]*$/", message="Invalid phone number")
      * @ORM\Column(name="telephone", type="string", length=20)
      */
     private $telephone;
 
     /**
      * @var string
-     *
+     * @Assert\NotNull()
      * @ORM\Column(name="city", type="string", length=255)
      */
     private $city;
 
     /**
      * @var float
+     * @Assert\Range(min="0")
      * @ORM\Column(name="cash", type="decimal", precision=10, scale=2)
      */
     private $cash;
@@ -96,6 +101,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="AdministrationBundle\Entity\Orders", mappedBy="user")
      */
     private $order;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AdministrationBundle\Entity\Product", mappedBy="selelr")
+     */
+    private $products;
 
     /**
      * User constructor.

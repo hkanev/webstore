@@ -1,0 +1,23 @@
+{% extends 'adminbase.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            {{ form_start(edit_form) }}
+            <fieldset>
+                <legend>Edit Discount</legend>
+                {{ form_widget(edit_form)  }}
+                <div class="col-sm-5 col-sm-offset-3">
+                    <a class="btn btn-default" href="{{ path('shop_index') }}">Cancel</a>
+                    <button type="submit" class="btn btn-primary" formnovalidate>Edit</button>
+                </div>
+            </fieldset>
+            {{ form_end(edit_form) }}
+        </div>
+    </div>
+{% endblock %}
+

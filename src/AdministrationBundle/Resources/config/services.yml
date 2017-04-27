@@ -1,4 +1,12 @@
 services:
-#    webstore.example:
-#        class: WebstoreBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+  repository.discount:
+    class: Doctrine\ORM\EntityRepository
+    factory: ["@doctrine.orm.entity_manager", getRepository]
+    arguments:
+      - AdministrationBundle\Entity\Discount
+  discount_manager:
+    class: AdministrationBundle\Services\DiscountManager
+    arguments: ['@repository.discount']
+  discount_calculator:
+    class: AdministrationBundle\Services\DiscountCalculator
+    arguments: ['@discount_manager', '@security.token_storage']

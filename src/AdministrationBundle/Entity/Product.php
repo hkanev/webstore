@@ -4,6 +4,7 @@ namespace AdministrationBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\ManyToMany;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,7 +26,8 @@ class Product
 
     /**
      * @var string
-     *
+     * @Assert\Range(min="0.99")
+     * @Assert\NotNull()
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
      */
     private $price;
@@ -34,6 +36,7 @@ class Product
      * @var integer
      * @ORM\Column(name="quantity", type="integer")
      * @Assert\Range(min="0")
+     * @Assert\NotNull()
      */
     private $quantity;
 
@@ -47,6 +50,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100)
+     * @Assert\NotNull()
      */
     private $name;
 
@@ -70,22 +74,18 @@ class Product
     private $onSale;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="discount", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\ManyToOne(targetEntity="AdministrationBundle\Entity\Discount", inversedBy="products")
      */
     private $discount;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="seller", type="string", nullable=false)
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="products")
      */
-    private $seller;
+    private $selelr;
 
     /**
      * @ORM\Column(type="string")
-     *
+     * @Assert\Image(mimeTypes="image/*", maxSize="5M")
      */
     private $image;
 
@@ -97,6 +97,7 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity="AdministrationBundle\Entity\Category", inversedBy="category")
+     * @Assert\NotNull()
      */
     private $category;
 
@@ -112,7 +113,6 @@ class Product
         $this->onSale = true;
         $this->reviews = new ArrayCollection();
         $this->order = new ArrayCollection();
-        $this->seller = 'FoxMobile';
     }
 
     /**
@@ -310,22 +310,6 @@ class Product
     }
 
     /**
-     * @return string
-     */
-    public function getDiscount()
-    {
-        return $this->discount;
-    }
-
-    /**
-     * @param string $discount
-     */
-    public function setDiscount($discount)
-    {
-        $this->discount = $discount;
-    }
-
-    /**
      * @return ArrayCollection
      */
     public function getOrder()
@@ -342,19 +326,42 @@ class Product
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getSeller(): string
+    public function getDiscount()
     {
-        return $this->seller;
+        return $this->discount;
     }
 
     /**
-     * @param string $seller
+     * @param mixed $discount
      */
-    public function setSeller(string $seller)
+    public function setDiscount($discount)
     {
-        $this->seller = $seller;
+        $this->discount = $discount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSelelr()
+    {
+        return $this->selelr;
+    }
+
+    /**
+     * @param mixed $selelr
+     */
+    public function setSelelr($selelr)
+    {
+        $this->selelr = $selelr;
+    }
+
+
+
+    function __toString()
+    {
+        return $this->name;
     }
 }
 

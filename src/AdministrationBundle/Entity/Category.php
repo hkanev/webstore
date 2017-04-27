@@ -4,6 +4,7 @@ namespace AdministrationBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Category
@@ -26,10 +27,12 @@ class Category
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     *@Assert\NotNull()
      */
     private $name;
 
     /**
+     * @Assert\Image(mimeTypes="image/*", maxSize="5M")
      * @ORM\Column(type="string")
      *
      */
@@ -40,6 +43,11 @@ class Category
      * @ORM\Column(name="deleted", type="boolean", nullable=false)
      */
     private $deleted;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AdministrationBundle\Entity\Discount", mappedBy="category")
+     */
+    private $discount;
 
     /**
      * @return mixed

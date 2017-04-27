@@ -10,3 +10,15 @@ services:
     app.image_uploader:
         class: AdministrationBundle\Services\FileUploader
         arguments: ['%images%']
+    sort.products.manager:
+        class: AdministrationBundle\Services\ProductManager
+        arguments: ['@doctrine.orm.entity_manager']
+    sort.discount.manager:
+            class: AdministrationBundle\Services\SortDiscountManager
+            arguments: ['@doctrine.orm.entity_manager']
+    order.manager:
+        class: AdministrationBundle\Services\OrderManager
+        arguments: ['@security.token_storage', '@discount_calculator']
+    user.product.manager:
+        class: AdministrationBundle\Services\UserProductManager
+        arguments: ['@app.image_uploader']

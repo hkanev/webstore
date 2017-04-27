@@ -21,7 +21,7 @@ use AdministrationBundle\Form\ProductType;
 class ProductController extends Controller
 {
     /**
-     * @Route("/products", name="products_list")
+     * @Route("/admin/products", name="products_list")
      */
     public function listAction(Request $request)
     {
@@ -35,7 +35,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/products/add", name="product_add_form")
+     * @Route("admin/products/add", name="product_add_form")
      * @Method("GET")
      */
     public function createAction()
@@ -49,7 +49,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/products/add", name="product_add_process")
+     * @Route("admin/products/add", name="product_add_process")
      * @Method("POST")
      */
     public function createProcessAction(Request $request)
@@ -80,7 +80,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/products/edit/{id}", name="product_edit_form")
+     * @Route("admin/products/edit/{id}", name="product_edit_form")
      * @Method("GET")
      * @param $id
      * @return Response
@@ -93,7 +93,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/products/edit/{id}", name="product_edit_process")
+     * @Route("admin/products/edit/{id}", name="product_edit_process")
      * @Method("POST")
      * @param $id
      * @param Request $request
@@ -124,7 +124,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/products/delte/{id}", name="product_delete_process")
+     * @Route("admin/products/delte/{id}", name="product_delete_process")
      * @Method("POST")
      * @param Product $product
      * @return \Symfony\Component\HttpFoundation\RedirectResponse

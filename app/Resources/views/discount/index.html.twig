@@ -1,0 +1,68 @@
+{% extends 'adminbase.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <fieldset>
+                <legend>Discounts</legend>
+                <form action="" method="get" class="form-horizontal" id="myForm">
+                    <div class="form-group" id="form-sort">
+                        <label for="sort_list" class=control-label">Sort by: </label>
+                        <select class="form-control" id="sort_list" name="option" onchange="this.form.submit()">
+                            <option></option>
+                            <option value="recent">Recent</option>
+                            <option value="price_asc">Price asc</option>
+                            <option value="price_desc">Price desc</option>
+                            <option value="top_sellers">Top sellers</option>
+                        </select>
+                        <a href="{{ path('product_add_form') }}" class="btn btn-primary btn-sm" id="form-sort-a">Create</a>
+                    </div>
+                    <hr>
+                </form>
+                <table class="table table-striped table-hover text-center" >
+                    <thead >
+                    <tr>
+                        <th class="text-center">startDate</th>
+                        <th class="text-center">EndDate</th>
+                        <th class="text-center">Discount</th>
+                        <th class="text-center">Cash</th>
+                        <th class="text-center">Category</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for discount in pagination %}
+                        <tr>
+                            <td>{{ discount.startDate|date('Y-m-d') }}</td>
+                            <td>{{ discount.endDate|date('Y-m-d') }}</td>
+                            <td>{{ discount.discount }}</td>
+                            {% if  discount.cash is not null %}
+                                <td>{{ discount.cash }}</td>
+                            {% endif %}
+                            {% if  discount.category is not null %}
+                                <td>{{ discount.category.name }}</td>
+                            {% endif %}
+                             {% if discount.products is not null %}
+                                {% for product in discount.products %}
+                                    <tr>
+                                        <td></td>
+                                        <td>{{ product.category.name }} {{ product.name }}</td>
+                                        <td><del>{{ product.price }}</del></td>
+                                        <td>{{ calc.calculate(product) | number_format(2)}}</td>
+                                    </tr>
+                                {% endfor %}
+                             {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </fieldset>
+        </div>
+    </div>
+{% endblock %}

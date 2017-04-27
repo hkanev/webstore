@@ -32,12 +32,6 @@
                                 <div class="product-inner">
                                     <h2 class="product-name">{{ product.name }}</h2>
                                     <div class="product-inner-price">
-                                        {% if product.discount is null %}
-                                            <ins>{{ product.price }}</ins>
-                                        {% else %}
-                                            <ins>{{ product.discount }}</ins>
-                                            <del>{{ product.price }}</del>
-                                        {% endif %}
                                     </div>
 
                                     <form action="{{ path('add_to_cart', {'id': product.id}) }}" class="cart">

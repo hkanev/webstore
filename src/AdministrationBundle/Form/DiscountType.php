@@ -5,29 +5,37 @@ namespace AdministrationBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use AdministrationBundle\Entity\Discount;
 
 class DiscountType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('discount')
             ->add('startDate')
-            ->add('endDate');
+            ->add('endDate')
+            ->add('discount');
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'data_class' => Discount::class
-            ]
-        );
+        $resolver->setDefaults(array(
+            'data_class' => 'AdministrationBundle\Entity\Discount'
+        ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
-        return 'webstore_bundle_discount_type';
+        return 'administrationbundle_discount';
     }
+
+
 }

@@ -86,7 +86,7 @@ class Checkout
      */
     public function getCreatedOn()
     {
-        return $this->createdOn;
+        return $this->createdOn->format('Y-m-h');
     }
 
     /**

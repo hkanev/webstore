@@ -23,7 +23,6 @@ class Orders
 
     /**
      * @var int
-    @
      * @ORM\Column(name="productQuantity", type="integer", nullable=true)
      */
     private $productQuantity;
@@ -48,6 +47,12 @@ class Orders
      * @ORM\Column(name="deleted", type="boolean", nullable=false)
      */
     private $deleted;
+
+    /**
+     * @var int
+     * @ORM\Column(name="sell_quantity", type="integer", nullable=true)
+     */
+    private $sellQuantity;
 
     function __construct()
     {
@@ -147,7 +152,6 @@ class Orders
     {
         $this->deleted = $deleted;
     }
-
 
 }
 

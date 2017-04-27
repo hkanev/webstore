@@ -131,6 +131,7 @@ class UserController extends Controller
         $user = $this->getUser();
         $orderRepo = $this->getDoctrine()->getRepository(Orders::class);
         $completeOrders = $orderRepo->findCompleteOrders($user);
+        dump($completeOrders);
 
         return $this->render("@User/user/profile.html.twig", ['user'=>$user , 'completeOrders' => $completeOrders]);
     }

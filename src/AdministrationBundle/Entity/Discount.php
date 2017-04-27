@@ -3,6 +3,8 @@
 namespace AdministrationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
 
 /**
  * Discount
@@ -42,6 +44,16 @@ class Discount
      */
     private $discount;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="AdministrationBundle\Entity\Category", inversedBy="discount")
+     */
+    private $category;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="AdministrationBundle\Entity\Product", mappedBy="discount")
+     */
+    private $products;
 
     /**
      * Get id
@@ -60,6 +72,12 @@ class Discount
      *
      * @return Discount
      */
+
+    /**
+     * @ORM\Column(name="cash", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $cash;
+
     public function setStartDate($startDate)
     {
         $this->startDate = $startDate;
@@ -124,5 +142,55 @@ class Discount
     {
         return $this->discount;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param mixed $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param mixed $products
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
+    }
+
+    /**
+     *
+     */
+    public function getCash()
+    {
+        return $this->cash;
+    }
+
+    /**
+     *
+     */
+    public function setCash($cash)
+    {
+        $this->cash = $cash;
+    }
+
+
 }
 

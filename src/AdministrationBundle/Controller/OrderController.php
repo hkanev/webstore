@@ -30,13 +30,15 @@ class OrderController extends Controller
         if ($user == null) {
             return $this->redirectToRoute('security_login');
         }
-        $order = $this->getDoctrine()->getRepository(Orders::class)->findOneBy(['product' => $product, 'user' => $user]);
+        $order = $this->getDoctrine()->getRepository(Orders::class)->findExistingOrder($product, $user);
+            dump($order);
         if($order == null){
             $order = new Orders();
             $order->setUser($user);
             $order->setProduct($product);
             $order->setProductQuantity($quantity);
         } else {
+            $order = $order[0];
             $order->setProductQuantity($order->getProductQuantity() + $quantity);
         }
 
@@ -53,74 +55,19 @@ class OrderController extends Controller
      */
     public function showCart()
     {
-        $form = $this->createForm(CheckoutType::class, null, ['action' => $this->generateUrl('cart_order')]);
-        $user = $this->getUser();
-        if ($user == null) {
+        $form = $this->createForm(CheckoutType::class, null, ['action' => $this->generateUrl('checkout')]);
+        $calc = $this->get('discount_calculator');
+
+        if ($this->getUser() == null) {
             return $this->redirectToRoute('security_login');
         }
 
-        $orderRepo = $this->getDoctrine()->getRepository(Orders::class);
-        $orders = $orderRepo->findOrders($user);
-        $totalPrice = $this->setTotalPrice($orders);
+        $orders = $this->getDoctrine()->getRepository(Orders::class)
+                ->findOrders($this->getUser());
+        $totalPrice = $this->get('order.manager')->setTotalPrice($orders);
 
         return $this->render('@Administration/order/my_cart.html.twig', ['orders' => $orders, 'totalprice' => $totalPrice,
-            'form' => $form->createView()]);
-    }
-
-
-
-    /**
-     * @Route("/order", name="cart_order")
-     */
-    public function order(Request $request)
-    {
-        $user = $this->getUser();
-        $orderRepo = $this->getDoctrine()->getRepository(Orders::class);
-        $orders = $orderRepo->findOrders($user);
-        $totalPrice = $this->setTotalPrice($orders);
-        $checkout = new Checkout();
-        foreach ($orders as $order) {
-            $order->setCheckout($checkout);
-            $product = $order->getProduct();
-            $quantity = $product->getQuantity() - $order->getProductQuantity();
-
-            if($quantity < 0){
-                throw new \Exception("Invalid quantity");
-            }
-            $product->setSold($order->getProductQuantity());
-            $product->setQuantity($quantity);
-        }
-
-        $cash = $user->getCash() - $totalPrice;
-        if ($cash < 0) {
-            throw new \Exception("Not enough money");
-        }
-        $user->setCash($cash);
-        $checkout->setTotalPrice($totalPrice);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($checkout);
-        $em->persist($user);
-        $em->flush();
-
-        return $this->redirectToRoute('products_shop_list');
-    }
-
-    private function getOrders()
-    {
-        $user = $this->getUser()->getId();
-        return $orders = $this->getDoctrine()->getManager()->getRepository(Orders::class)->findBy(['user' => $user]);
-    }
-
-    private function setTotalPrice($orders)
-    {
-        $totalPrice = 0;
-        foreach ($orders as $order) {
-            $price = $order->getProduct()->getPrice();
-            $quantity = $order->getProductQuantity();
-            $totalPrice += $price * $quantity;
-        }
-        return $totalPrice;
+           'calculator' => $calc, 'form' => $form->createView()]);
     }
 
     /**
@@ -158,38 +105,30 @@ class OrderController extends Controller
      */
    public function sellBoughtProductProcess(Orders $order, Request $request)
    {
-       $category = $this->getDoctrine()->getRepository(Category::class)->find(7);
+       $category = $this->getDoctrine()->getRepository(Category::class)
+           ->findCategory('User');
+
        $product = $order->getProduct();
-       $newProduct = new Product();
        $oldImage = $product->getImage();
        $form = $this->createForm(ProductType::class, $product);
        $form->handleRequest($request);
 
        if($form->isSubmitted() && $form->isValid()){
-           $image = $product->getImage();
-           if($image == null){
-               $image = new File($this->getParameter('images').$oldImage);
-               $imageName = $this->get('app.image_uploader')->upload($image);
-           } else {
-               $imageName = $this->get('app.image_uploader')->upload($image);
-           }
-           $newProduct->setImage($imageName);
-           $newProduct->setQuantity($product->getQuantity());
-           $newProduct->setSeller($order->getUser()->getEmail());
-           $newProduct->setCategory($category);
-           $newProduct->setCreatedOn($product->getCreatedOn());
-           $newProduct->setDescription($product->getDescription());
-           $newProduct->setName($product->getName());
-           $newProduct->setPrice($product->getPrice());
+            $image = $product->getImage();
+
+           $newProduct = $this->get('user.product.manager')
+                       ->createUserProduct($order, $image, $oldImage, $category, $this->getUser());
+
 
            $em = $this->getDoctrine()->getManager();
            $em->refresh($product);
            $em->persist($newProduct);
            $em->flush();
 
-           $this->addFlash("info", "Product with name ". $product->getName(). " was edited successfully!");
+           $this->addFlash("info", "Product with name ". $newProduct->getName(). " was created successfully!");
            return $this->redirectToRoute("products_list");
        }
+
        return $this->render('@Administration/products/create.html.twig', ['form' => $form->createView()]);
    }
 }

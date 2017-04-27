@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <form method="post" action="{{ path('cart_order') }}">
+    <form method="post" action="{{ path('checkout') }}">
         <table cellspacing="0" class="shop_table cart">
             <thead>
             <tr>
@@ -29,7 +29,12 @@
                 </td>
 
                 <td class="product-price">
-                    <span class="amount">{{ order.product.price }}</span>
+                    {% if order.product.selelr is null %}
+                        <span class="amount">{{  calculator.calculate(order.product)}}</span>
+                    {% else %}
+                        <span class="amount">{{ order.product.price }}</span>
+                    {% endif %}
+
                 </td>
 
                 <td class="product-quantity">
@@ -39,7 +44,11 @@
                 </td>
 
                 <td class="product-subtotal">
-                    <span class="amount">{{ order.product.price * order.productQuantity }}</span>
+                    {% if order.product.selelr is null %}
+                        <span class="amount">{{  calculator.calculate(order.product) * order.productQuantity}}</span>
+                    {% else %}
+                        <span class="amount">{{ order.product.price * order.productQuantity }}</span>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -50,13 +59,7 @@
             </tr>
             <tr>
                 <td class="actions" colspan="6">
-                    <div class="coupon">
-                        <label for="coupon_code">Coupon:</label>
-                        <input type="text" placeholder="Coupon code" value="" id="coupon_code" class="input-text" name="coupon_code">
-                        <input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
-                    </div>
-                    <input type="submit" value="Update Cart" name="update_cart" class="button">
-                    <input type="submit" value="Checkout" name="proceed" class="checkout-button button alt wc-forward">
+                    <input type="submit" value="Checkout" name="proceed" class="checkout-button button alt wc-forward floatright">
                 </td>
             </tr>
             </tbody>

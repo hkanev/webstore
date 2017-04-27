@@ -1,0 +1,43 @@
+{% extends 'adminbase.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <fieldset>
+                <legend>Checkouts</legend>
+                <table class="table table-striped table-hover text-center" >
+                    <thead >
+                    <tr>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for checkout in checkouts %}
+                        <tr>
+                            <td>{{ checkout.id }}</td>
+                            <td>{{ checkout.createdOn }}</td>
+                            <td><a href="{{ path('change_status', {'id': checkout.id}) }}">{{ checkout.status }}</a></td>
+                            <td>{{ checkout.totalPrice|round(2) }}$</td>
+                        </tr>
+                        {%  for order in checkout.orders %}
+                        <tr>
+                            <td></td>
+                            <td>{{ order.product.name }}</td>
+                            <td>{{ order.productQuantity }}</td>
+                            <td>{{ order.product.price * order.productQuantity }}$</td>
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+{% endblock %}

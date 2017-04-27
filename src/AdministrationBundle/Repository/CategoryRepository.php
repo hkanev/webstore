@@ -10,4 +10,27 @@ namespace AdministrationBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findCategories()
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb
+            ->select('c')
+            ->where($qb->expr()->eq('c.deleted', 0))
+            ->setMaxResults(10);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findCategory($name)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb
+            ->select('c')
+            ->where($qb->expr()->eq('c.name', ':name'))
+            ->setParameter('name', $name);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

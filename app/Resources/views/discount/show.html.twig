@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Discount</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ discount.id }}</td>
+            </tr>
+            <tr>
+                <th>Startdate</th>
+                <td>{% if discount.startDate %}{{ discount.startDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Enddate</th>
+                <td>{% if discount.endDate %}{{ discount.endDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Discount</th>
+                <td>{{ discount.discount }}</td>
+            </tr>
+            <tr>
+                <th>Cash</th>
+                <td>{{ discount.cash }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('discount_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('discount_edit', { 'id': discount.id }) }}">Edit</a>
+        </li>
+
+    </ul>
+{% endblock %}

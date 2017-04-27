@@ -3,6 +3,7 @@
 namespace ShopBundle\Controller;
 
 use AdministrationBundle\Entity\Category;
+use AdministrationBundle\Entity\Discount;
 use AdministrationBundle\Entity\Product;
 use AdministrationBundle\Form\ProductType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -13,6 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ShopController extends Controller
 {
+    CONST seller = 'FoxMobile';
+    CONST productsPerPage = 12;
+
     /**
      * @Route("/", name="shop_index")
      * @Method("GET")
@@ -33,7 +37,7 @@ class ShopController extends Controller
      */
     public function navigationAction()
     {
-        $categories = $this->getDoctrine()->getManager()->getRepository(Category::class)->findAll();
+        $categories = $this->getDoctrine()->getManager()->getRepository(Category::class)->findCategories();
         $topSellers =  $this->getDoctrine()->getManager()->getRepository(Product::class)->findTopSellers();;
         return $this->render('@Shop/Shop/navigation.html.twig', ['categories' => $categories, 'topSellers' => $topSellers]);
     }
@@ -44,13 +48,13 @@ class ShopController extends Controller
      */
     public function productsShow(Request $request)
     {
-        $query = $this->buildSortableQuery($request->get('option'));
+        $calc = $this->get('discount_calculator');
+        $query = $this->get('sort.products.manager')->sortProducts($request->get('option'));
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-            $query->getQuery(), $request->query->getInt('page', 1),
-            12
+            $query->getQuery(), $request->query->getInt('page', 1), self::productsPerPage
         );
-        return $this->render('@Shop/Shop/product_list.html.twig', ['pagination' => $pagination]);
+        return $this->render('@Shop/Shop/product_list.html.twig', ['pagination' => $pagination, 'calc' => $calc]);
     }
 
     /**
@@ -58,56 +62,40 @@ class ShopController extends Controller
      */
     public function productByCategory(Category $category, Request $request)
     {
-        $query = $this->buildSortableQuery($request->get('option'));
-        $query->andWhere('p.category = :cat')->setParameter('cat', $category);
+        $calc = $this->get('discount_calculator');
+        $query = $this->get('sort.products.manager')->sortProductsByCategory($request->get('option'), self::seller, $category);
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-            $query->getQuery(), $request->query->getInt('page', 1),
-            12
+            $query->getQuery(), $request->query->getInt('page', 1), self::productsPerPage
         );
-        return $this->render('@Shop/Shop/product_list.html.twig', ['pagination' => $pagination]);
+        return $this->render('@Shop/Shop/product_list.html.twig', ['pagination' => $pagination, 'calc' => $calc]);
     }
 
+    /**
+     * @Route("/products_user_list", name="user_products_list")
+     */
+    public function userProducts( Request $request)
+    {
+        $calc = $this->get('discount_calculator');
+        $query = $this->get('sort.products.manager')->sortUserProducts($request->get('option'));
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query->getQuery(), $request->query->getInt('page', 1), self::productsPerPage
+        );
+        return $this->render('@Shop/Shop/product_list.html.twig', ['pagination' => $pagination, 'calc' => $calc]);
+    }
 
     /**
      * @Route("/products/view/{id}", name="product_view")
      * @param Product $product
      * @return Response
      */
-    public function viewAction(Product $product)
+    public function productView(Product $product)
     {
         $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
         $form = $this->createForm(ProductType::class, $product);
 
         return $this->render('@Shop/Shop/product.html.twig',
             ['form' => $form->createView() , 'product' => $product , 'categories' => $categories]);
-    }
-
-
-    private function buildSortableQuery($sort)
-    {
-        $seller = 'FoxMobile';
-        switch($sort) {
-            case 'price_asc':
-                return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
-                    ->select('p')->where('p.seller = :sell')->andWhere('p.onSale = 1')->orderBy('p.price', 'asd')
-                    ->setParameter('sell', $seller);
-            case 'price_desc':
-                return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
-                    ->select('p')->where('p.seller = :sell')->andWhere('p.onSale = 1')->orderBy('p.price', 'desc')
-                    ->setParameter('sell', $seller);
-            case 'recent':
-                return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
-                    ->select('p')->where('p.seller = :sell')->andWhere('p.onSale = 1')->orderBy('p.createdOn', 'desc')
-                    ->setParameter('sell', $seller);
-            case 'top_sellers':
-                return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
-                    ->select('p')->where('p.seller = :sell')->andWhere('p.onSale = 1')->orderBy('p.sold', 'desc')
-                    ->setParameter('sell', $seller);
-            default:
-                return $query = $this->getDoctrine()->getRepository(Product::class)->createQueryBuilder('p')
-                    ->select('p')->where('p.seller = :sell')->andWhere('p.onSale = 1')->orderBy('p.createdOn', 'desc')
-                    ->setParameter('sell', $seller);
-        }
     }
 }

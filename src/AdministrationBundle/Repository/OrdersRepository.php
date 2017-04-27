@@ -2,6 +2,7 @@
 
 namespace AdministrationBundle\Repository;
 
+use AdministrationBundle\Entity\Product;
 use UserBundle\Entity\User;
 
 /**
@@ -15,7 +16,29 @@ class OrdersRepository extends \Doctrine\ORM\EntityRepository
     public function findOrders(User $user)
     {
         $qb = $this->createQueryBuilder('o');
-        $qb->select('o')->where('o.checkout IS  NUll')->andWhere('o.deleted = 0')->andWhere('o.user = :usr')->setParameter('usr', $user);
+
+        $qb
+            ->select('o')
+            ->where($qb->expr()->isNull('o.checkout'))
+            ->andWhere($qb->expr()->eq('o.deleted', 0))
+            ->andwhere($qb->expr()->eq('o.user', ':user'))
+            ->setParameter('user', $user);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findExistingOrder(Product $product, User $user)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb
+            ->select('o')
+            ->where($qb->expr()->eq('o.user', ':user'))
+            ->andWhere($qb->expr()->eq('o.product', ':product'))
+            ->andWhere($qb->expr()->eq('o.deleted', 0))
+            ->andWhere($qb->expr()->isNull('o.checkout'))
+            ->setParameter('user', $user)
+            ->setParameter('product', $product);
 
         return $qb->getQuery()->getResult();
     }
@@ -23,7 +46,13 @@ class OrdersRepository extends \Doctrine\ORM\EntityRepository
     public function findCompleteOrders(User $user)
     {
         $qb = $this->createQueryBuilder('o');
-        $qb->select('o')->where('o.checkout IS NOT NUll')->andWhere('o.user = :usr')->setParameter('usr', $user);
+        $qb
+            ->select('o')
+            ->where('o.checkout IS NOT NUll')
+            ->andWhere($qb->expr()->eq('o.status', ':status'))
+            ->andWhere('o.user = :usr')
+            ->setParameter('status', 'In user')
+            ->setParameter('usr', $user);
 
         return $qb->getQuery()->getResult();
     }

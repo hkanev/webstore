@@ -1,0 +1,33 @@
+{% extends 'adminbase.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+
+            {{ form_start(form) }}
+
+            <fieldset>
+                <legend>Create Discount
+                            <select style="float: right" onchange="document.location.href=this.value">
+                                <option>Chooce <Discount></Discount></option>
+                                <option value="{{ path('create_general_discount') }}">General Discount</option>
+                                <option value="{{ path('create_product_discount') }}">Product Discount</option>
+                                <option value="{{ path('create_category_discount') }}">Category Discount</option>
+                                <option value="{{ path('create_cash_discount') }}">Cash Discount</option>
+                            </select>
+                </legend>
+                {{ form_widget(form)  }}
+                <div class="col-sm-4 col-sm-offset-4">
+                    <a class="btn btn-default" href="{{ path('shop_index') }}">Cancel</a>
+                    <button type="submit" class="btn btn-primary" formnovalidate>Create</button>
+                </div>
+            </fieldset>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+

@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block container %}
+
 <div class="single-product-area">
     <div class="zigzag-bottom"></div>
     <div class="container">
@@ -27,6 +28,14 @@
                 {{ render(controller('ShopBundle:Shop:navigation')) }}
             </div>
             <div class="col-sm-9">
+                {% block flash %}
+                    {% for msg in app.session.flashBag.get('info') %}
+                        <div class="alert alert-dismissible alert-success">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>{{ msg }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endblock %}
                 {% for product in pagination %}
                 <div class="col-md-3 col-sm-6">
                     <div class="single-shop-product">
@@ -35,10 +44,10 @@
                         </div>
                         <h2><a href="{{ path('product_view', {'id': product.id}) }}">{{ product.category }} {{ product.name }}</a></h2>
                         <div class="product-carousel-price">
-                            {% if product.discount is null %}
+                            {% if product.price == calc.calculate(product) %}
                                 <ins>{{ product.price }}</ins>
                             {% else %}
-                                <ins>{{ product.discount }}</ins>
+                                <ins>{{ calc.calculate(product) | number_format(2)}}</ins>
                                 <del>{{ product.price }}</del>
                             {% endif %}
                         </div>

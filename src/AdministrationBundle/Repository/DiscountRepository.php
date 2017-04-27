@@ -1,6 +1,8 @@
 <?php
 
 namespace AdministrationBundle\Repository;
+use Symfony\Component\Validator\Constraints\DateTime;
+use UserBundle\Entity\User;
 
 /**
  * DiscountRepository
@@ -10,4 +12,99 @@ namespace AdministrationBundle\Repository;
  */
 class DiscountRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function fetchBiggestGeneralDiscount()
+    {
+        $qb = $this->createQueryBuilder('d');
+        $today = new \DateTime();
+
+        $query = $qb
+            ->select('d.discount')
+            ->leftJoin('d.products', 'p')
+            ->where($qb->expr()->lte('d.startDate', ':today'))
+            ->andWhere($qb->expr()->gte('d.endDate', ':today'))
+            ->andWhere($qb->expr()->isNull('d.category'))
+            ->andWhere($qb->expr()->isNull('p.discount'))
+            ->andWhere($qb->expr()->isNull('d.cash'))
+            ->setParameter('today', $today->format('Y-m-d'))
+            ->orderBy('d.discount', 'DESC')->setMaxResults(1)
+            ->getQuery();
+        dump($query);
+        if($query->getOneOrNullResult() != null){
+            return $query->getSingleScalarResult();
+        }
+            return 0;
+
+
+    }
+
+    public function fetchCategoriesDiscount()
+    {
+        $qb = $this->createQueryBuilder('d');
+        $today = new \DateTime();
+
+        $qb
+            ->select(['MAX(d.discount) as discount', 'c.id'])
+            ->join('d.category', 'c')
+            ->where($qb->expr()->lte('d.startDate', ':today'))
+            ->andWhere($qb->expr()->gte('d.endDate', ':today'))
+            ->andWhere($qb->expr()->isNotNull('d.category'))
+            ->setParameter(':today', $today->format("Y-m-d"))
+            ->orderBy('d.discount', 'DESC');
+
+        $results = $qb->getQuery()->getResult();
+
+        $promotions = [];
+        foreach ($results as $promotion){
+            $promotions[(int)$promotion['id']] = (int)$promotion['discount'];
+        }
+
+        return $promotions;
+    }
+
+    public function fetchProductsDiscount()
+    {
+        $qb = $this->createQueryBuilder('d');
+        $today = new \DateTime();
+
+        $qb
+            ->select(['(d.discount) as discount', 'p.id'])
+            ->join('d.products', 'p')
+            ->where($qb->expr()->lte('d.startDate', ':today'))
+            ->andWhere($qb->expr()->gte('d.endDate', ':today'))
+            ->setParameter(':today', $today->format("Y-m-d"))
+            ->orderBy('d.discount', 'DESC');
+
+        $results = $qb->getQuery()->getResult();
+        $promotions = [];
+        foreach ($results as $promotion){
+            $promotions[(int)$promotion['id']] = (int)$promotion['discount'];
+        }
+        return $promotions;
+    }
+
+    public function fetchUserCashPromotion()
+    {
+        $qb = $this->createQueryBuilder('d');
+        $today = new \DateTime();
+
+         $qb
+            ->select(['d.discount', 'u.id'])
+            ->join(User::class, 'u')
+            ->where($qb->expr()->lte('d.startDate', ':today'))
+            ->andWhere($qb->expr()->gte('d.endDate', ':today'))
+            ->andWhere($qb->expr()->gt('d.cash', ':cash'))
+             ->andWhere($qb->expr()->lt('d.cash', 'u.cash'))
+            ->setParameter('cash', 0)
+            ->setParameter('today', $today->format('Y-m-d'))
+            ->orderBy('d.discount', 'DESC');
+
+
+        $results = $qb->getQuery()->getResult();
+
+        $promotions = [];
+        foreach ($results as $promotion){
+            $promotions[(int)$promotion['id']] = (int)$promotion['discount'];
+        }
+        return $promotions;
+    }
 }
