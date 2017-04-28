@@ -13,9 +13,9 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     public function findTopSellers()
     {
         $qb = $this->createQueryBuilder('p');
-            $qb->select('p')->where('p.onSale = 1')->orderBy('p.sold', 'desc')->setMaxResults(3);
+        $qb->select('p')->where('p.onSale = 1')->orderBy('p.sold', 'desc')->setMaxResults(3);
 
-            return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     public function findRecentProducts()
@@ -37,7 +37,46 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     public function findProducts()
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->select('p')->where('p.onSale = 1')->orderBy('p.createdOn', 'desc');
+        $qb->select('p')
+            ->where('p.onSale = 1')
+            ->andWhere('p.quantity > 0')
+            ->orderBy('p.createdOn', 'desc');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findProductsQuery()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p')
+            ->where('p.onSale = 1')
+            ->andWhere('p.quantity > 0')
+            ->orderBy('p.createdOn', 'desc');
+        return $qb;
+    }
+
+    public function findUserProductsInShop($user)
+    {
+        $qb= $this->createQueryBuilder('p');
+
+        $qb
+            ->select('p')
+            ->where($qb->expr()->eq('p.selelr', ':seller'))
+            ->andWhere($qb->expr()->gt('p.quantity', 0))
+            ->setParameter('seller', $user);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findSoldUserProducts($user)
+    {
+        $qb= $this->createQueryBuilder('p');
+
+        $qb
+            ->select('p')
+            ->where($qb->expr()->eq('p.selelr', ':seller'))
+            ->andWhere($qb->expr()->eq('p.quantity', 0))
+            ->setParameter('seller', $user);
 
         return $qb->getQuery()->getResult();
     }

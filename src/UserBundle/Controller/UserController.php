@@ -4,6 +4,7 @@ namespace UserBundle\Controller;
 
 use AdministrationBundle\Entity\Checkout;
 use AdministrationBundle\Entity\Orders;
+use AdministrationBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -118,7 +119,7 @@ class UserController extends Controller
             return $this->redirectToRoute('user_profile');
         }
 
-        return $this->render('@User/user/register.html.twig', array('user' => $user,
+        return $this->render('@User/user/edit.html.twig', array('user' => $user,
             'form' => $form->createView()));
     }
 
@@ -131,8 +132,13 @@ class UserController extends Controller
         $user = $this->getUser();
         $orderRepo = $this->getDoctrine()->getRepository(Orders::class);
         $completeOrders = $orderRepo->findCompleteOrders($user);
-        dump($completeOrders);
 
-        return $this->render("@User/user/profile.html.twig", ['user'=>$user , 'completeOrders' => $completeOrders]);
+        $productRepo = $this->getDoctrine()->getRepository(Product::class);
+        $producsInShop =  $productRepo->findUserProductsInShop($user);
+        $soldProducts =  $productRepo->findSoldUserProducts($user);
+
+
+        return $this->render("@User/user/profile.html.twig",
+            ['user'=>$user , 'completeOrders' => $completeOrders, 'productsInShop' => $producsInShop, 'soldProducts' => $soldProducts]);
     }
 }

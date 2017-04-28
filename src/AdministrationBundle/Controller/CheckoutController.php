@@ -39,6 +39,14 @@ class CheckoutController extends Controller
     }
 
     /**
+     * @Route("/checkout/{id}", name="view_checkout")
+     */
+    public function viewCheckout(Checkout $checkout)
+    {
+        return $this->render('@Administration/checkout/checkout.html.twig', ['checkout' => $checkout]);
+    }
+
+    /**
      * @Route("/checkout", name="checkout")
      */
     public function checkout(Request $request)

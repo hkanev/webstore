@@ -73,7 +73,7 @@ class AdminController extends Controller
             $this->addFlash("info", "User ". $user->getUsername(). " edited!");
             return $this->redirectToRoute('users_list');
         }
-        return $this->render('@User/user/register.html.twig', array('user' => $user,
+        return $this->render('@User/user/edit.html.twig', array('user' => $user,
             'form' => $form->createView()));
     }
 
@@ -106,10 +106,10 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash("info", "User ". $user->getUsername(). " edited!");
-            return $this->redirectToRoute('users_view', ['id' => $user->getId()]);
+            return $this->redirectToRoute('users_list');
         }
 
-        return $this->render('@User/user/register.html.twig', array('user' => $user,
+        return $this->render('@User/user/edit.html.twig', array('user' => $user,
             'form' => $form->createView()));
     }
 }

@@ -13,9 +13,9 @@
                     <thead >
                     <tr>
                         <th class="text-center">Id</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Status</th>
                         <th class="text-center">Date</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Price</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -23,17 +23,9 @@
                         <tr>
                             <td>{{ checkout.id }}</td>
                             <td>{{ checkout.createdOn }}</td>
-                            <td><a href="{{ path('change_status', {'id': checkout.id}) }}">{{ checkout.status }}</a></td>
+                            <td><a href="{{ path('view_checkout', {'id': checkout.id}) }}">{{ checkout.status }}</a></td>
                             <td>{{ checkout.totalPrice|round(2) }}$</td>
                         </tr>
-                        {%  for order in checkout.orders %}
-                        <tr>
-                            <td></td>
-                            <td>{{ order.product.name }}</td>
-                            <td>{{ order.productQuantity }}</td>
-                            <td>{{ order.product.price * order.productQuantity }}$</td>
-                        </tr>
-                        {% endfor %}
                     {% endfor %}
                     </tbody>
                 </table>

@@ -83,33 +83,29 @@ class OrderController extends Controller
         return $this->redirectToRoute('cart_show');
     }
 
-    /**
-     * @Route("/profile/sell/{id}", name="user_sell_product_form")
-     * @Method("GET")
-     */
-    public function sellBoughtProduct(Orders $order)
-    {
-        $product = $order->getProduct();
-        $product->setQuantity($order->getProductQuantity());
-        $form = $this->createForm(ProductType::class, $product);
-        return $this->render('@Administration/products/create.html.twig',
-            [
-                'form' => $form->createView()
-            ]
-        );
-    }
 
     /**
-     *@Route("/profile/sell/{id}", name="user_sell_product_process")
-     * @Method("POST")
+     *@Route("/profile/sell/{id}", name="user_sell_product")
      */
    public function sellBoughtProductProcess(Orders $order, Request $request)
    {
+       if($order->getUser() != $this->getUser()){
+           $this->addFlash('info', 'Invalid user');
+           return $this->redirectToRoute('products_shop_list');
+       }
+
+       if( $order->getProductQuantity() <= $order->getSellQuantity()){
+           $this->addFlash('info', 'Not enough quantity of '.$order->getProduct()->getName());
+           return $this->redirectToRoute('user_profile');
+       }
+
+
        $category = $this->getDoctrine()->getRepository(Category::class)
            ->findCategory('User');
 
        $product = $order->getProduct();
        $oldImage = $product->getImage();
+       $product->setQuantity($order->getProductQuantity());
        $form = $this->createForm(ProductType::class, $product);
        $form->handleRequest($request);
 
@@ -119,6 +115,13 @@ class OrderController extends Controller
            $newProduct = $this->get('user.product.manager')
                        ->createUserProduct($order, $image, $oldImage, $category, $this->getUser());
 
+           if($order->getProductQuantity() < $newProduct->getQuantity() ){
+               $this->addFlash('info', 'Not enough quantity of '.$order->getProduct()->getName());
+               return $this->redirectToRoute('user_profile');
+           }
+           $order->setSellQuantity($product->getQuantity());
+
+
 
            $em = $this->getDoctrine()->getManager();
            $em->refresh($product);
@@ -126,7 +129,7 @@ class OrderController extends Controller
            $em->flush();
 
            $this->addFlash("info", "Product with name ". $newProduct->getName(). " was created successfully!");
-           return $this->redirectToRoute("products_list");
+           return $this->redirectToRoute("user_profile");
        }
 
        return $this->render('@Administration/products/create.html.twig', ['form' => $form->createView()]);

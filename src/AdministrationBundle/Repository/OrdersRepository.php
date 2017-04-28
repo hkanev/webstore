@@ -49,9 +49,8 @@ class OrdersRepository extends \Doctrine\ORM\EntityRepository
         $qb
             ->select('o')
             ->where('o.checkout IS NOT NUll')
-            ->andWhere($qb->expr()->eq('o.status', ':status'))
+            ->andWhere($qb->expr()->gt('o.productQuantity', 'o.sellQuantity'))
             ->andWhere('o.user = :usr')
-            ->setParameter('status', 'In user')
             ->setParameter('usr', $user);
 
         return $qb->getQuery()->getResult();

@@ -57,6 +57,7 @@ class Orders
     function __construct()
     {
         $this->deleted = false;
+        $this->sellQuantity = 0;
     }
 
     /**
@@ -152,6 +153,23 @@ class Orders
     {
         $this->deleted = $deleted;
     }
+
+    /**
+     * @return int
+     */
+    public function getSellQuantity(): int
+    {
+        return $this->sellQuantity;
+    }
+
+    /**
+     * @param int $sellQuantity
+     */
+    public function setSellQuantity(int $sellQuantity)
+    {
+        $this->sellQuantity = $sellQuantity;
+    }
+
 
 }
 

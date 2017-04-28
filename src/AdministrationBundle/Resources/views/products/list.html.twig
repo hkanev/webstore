@@ -29,6 +29,8 @@
                         <th class="text-center">Id</th>
                         <th class="text-center">Name</th>
                         <th class="text-center">Price</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-center">Seller</th>
                         <th class="text-center">Image</th>
                         <th class="text-center">Description</th>
                         <th class="text-center">Actions</th>
@@ -40,6 +42,13 @@
                         <td>{{ product.id }}</td>
                             <td><a href="{{ path('product_view', {'id': product.id}) }}">{{ product.name|slice(0,30) }}</a></td>
                             <td>{{ product.price }}</td>
+                            <td>{{ product.Quantity }}</td>
+                            {% if product.selelr is not null  %}
+                                <td>{{ product.selelr.email }}</td>
+                            {% else %}
+                                <td>FoxMobile</td>
+                            {% endif %}
+
                             <td><img src="{{ asset('uploads/')~product.image }}" width="17px" height="17px"></td>
                             <td>{{ product.description|slice(0,50) }}</td>
                             <td>

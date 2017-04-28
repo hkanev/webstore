@@ -25,10 +25,10 @@ class DiscountRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere($qb->expr()->isNull('d.category'))
             ->andWhere($qb->expr()->isNull('p.discount'))
             ->andWhere($qb->expr()->isNull('d.cash'))
-            ->setParameter('today', $today->format('Y-m-d'))
+            ->setParameter('today', $today)
             ->orderBy('d.discount', 'DESC')->setMaxResults(1)
             ->getQuery();
-        dump($query);
+
         if($query->getOneOrNullResult() != null){
             return $query->getSingleScalarResult();
         }
@@ -48,7 +48,7 @@ class DiscountRepository extends \Doctrine\ORM\EntityRepository
             ->where($qb->expr()->lte('d.startDate', ':today'))
             ->andWhere($qb->expr()->gte('d.endDate', ':today'))
             ->andWhere($qb->expr()->isNotNull('d.category'))
-            ->setParameter(':today', $today->format("Y-m-d"))
+            ->setParameter(':today', $today)
             ->orderBy('d.discount', 'DESC');
 
         $results = $qb->getQuery()->getResult();
@@ -71,7 +71,7 @@ class DiscountRepository extends \Doctrine\ORM\EntityRepository
             ->join('d.products', 'p')
             ->where($qb->expr()->lte('d.startDate', ':today'))
             ->andWhere($qb->expr()->gte('d.endDate', ':today'))
-            ->setParameter(':today', $today->format("Y-m-d"))
+            ->setParameter(':today', $today)
             ->orderBy('d.discount', 'DESC');
 
         $results = $qb->getQuery()->getResult();
@@ -95,16 +95,18 @@ class DiscountRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere($qb->expr()->gt('d.cash', ':cash'))
              ->andWhere($qb->expr()->lt('d.cash', 'u.cash'))
             ->setParameter('cash', 0)
-            ->setParameter('today', $today->format('Y-m-d'))
+            ->setParameter('today', $today)
             ->orderBy('d.discount', 'DESC');
 
 
         $results = $qb->getQuery()->getResult();
-
+        dump($results);
         $promotions = [];
         foreach ($results as $promotion){
             $promotions[(int)$promotion['id']] = (int)$promotion['discount'];
         }
+        dump($promotions);
         return $promotions;
+
     }
 }

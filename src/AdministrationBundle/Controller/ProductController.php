@@ -25,7 +25,7 @@ class ProductController extends Controller
      */
     public function listAction(Request $request)
     {
-        $query = $this->buildSortableQuery($request->get('option'))->where('p.onSale = 1');
+        $query = $this->get('sort.products.manager')->sortProducts($request->request->get('option'));
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query->getQuery(), $request->query->getInt('page', 1),
