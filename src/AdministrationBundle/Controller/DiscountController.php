@@ -3,13 +3,14 @@
 namespace AdministrationBundle\Controller;
 
 use AdministrationBundle\Entity\Discount;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Discount controller.
- *
+ * @Security("has_role('ROLE_ADMIN') | has_role('ROLE_EDITOR')")
  * @Route("discount")
  */
 class DiscountController extends Controller
@@ -24,12 +25,8 @@ class DiscountController extends Controller
     public function indexAction(Request $request)
     {
         $calc = $this->get('discount_calculator');
-        $query = $this->get('sort.discount.manager')->findGeneralDiscounts();
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $query->getQuery(), $request->query->getInt('page', 1), self::productsPerPage
-        );
-        return $this->render('discount/index.html.twig', ['pagination' => $pagination, 'calc' => $calc]);
+        $discounts =  $this->getDoctrine()->getRepository(Discount::class)->findDiscounts();
+        return $this->render('discount/index.html.twig', ['pagination' => $discounts, 'calc' => $calc]);
     }
 
     /**
@@ -48,7 +45,7 @@ class DiscountController extends Controller
             $em->persist($discount);
             $em->flush();
 
-            return $this->redirectToRoute('discount_show', array('id' => $discount->getId()));
+            return $this->redirectToRoute('discount_index', array('id' => $discount->getId()));
         }
 
         return $this->render('discount/new.html.twig', array(
@@ -81,7 +78,7 @@ class DiscountController extends Controller
             $em->persist($discount);
             $em->flush();
 
-            return $this->redirectToRoute('discount_show', array('id' => $discount->getId()));
+            return $this->redirectToRoute('discount_index');
         }
 
         return $this->render('discount/new.html.twig', array(
@@ -134,7 +131,7 @@ class DiscountController extends Controller
             $em->persist($discount);
             $em->flush();
 
-            return $this->redirectToRoute('discount_show', array('id' => $discount->getId()));
+            return $this->redirectToRoute('discount_index', array('id' => $discount->getId()));
         }
 
         return $this->render('discount/new.html.twig', array(
@@ -143,19 +140,6 @@ class DiscountController extends Controller
         ));
     }
 
-    /**
-     * Finds and displays a discount entity.
-     *
-     * @Route("/{id}", name="discount_show")
-     * @Method("GET")
-     */
-    public function showAction(Discount $discount)
-    {
-
-        return $this->render('discount/show.html.twig', array(
-            'discount' => $discount,
-        ));
-    }
 
     /**
      * Displays a form to edit an existing discount entity.
@@ -181,7 +165,7 @@ class DiscountController extends Controller
             $em->persist($discount);
             $em->flush();
 
-            return $this->redirectToRoute('discount_show', array('id' => $discount->getId()));
+            return $this->redirectToRoute('discount_index', array('id' => $discount->getId()));
         }
 
         return $this->render('discount/edit.html.twig', array(

@@ -4,6 +4,7 @@ namespace AdministrationBundle\Controller;
 
 use AdministrationBundle\Entity\Checkout;
 use AdministrationBundle\Entity\Orders;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,6 +15,7 @@ class CheckoutController extends Controller
     CONST completeStatus = 'Complete';
 
     /**
+     * @Security("has_role('ROLE_ADMIN') | has_role('ROLE_EDITOR')")
      * @Route("/checkouts", name="list_checkouts")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -26,6 +28,7 @@ class CheckoutController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN') | has_role('ROLE_EDITOR')")
      *  @Route("/checkouts/status/{id}", name="change_status")
      */
     public function changeStatus(Checkout $checkout)
@@ -39,6 +42,7 @@ class CheckoutController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN') | has_role('ROLE_EDITOR')")
      * @Route("/checkout/{id}", name="view_checkout")
      */
     public function viewCheckout(Checkout $checkout)

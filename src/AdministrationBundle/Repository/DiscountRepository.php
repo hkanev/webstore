@@ -109,4 +109,19 @@ class DiscountRepository extends \Doctrine\ORM\EntityRepository
         return $promotions;
 
     }
+
+    public function findDiscounts()
+    {
+        $qb = $this->createQueryBuilder('d');
+        $today = new \DateTime();
+
+        $qb
+            ->select(['d'])
+            ->where($qb->expr()->lte('d.startDate', ':today'))
+            ->andWhere($qb->expr()->gte('d.endDate', ':today'))
+            ->setParameter('today', $today)
+            ->orderBy('d.discount', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -17,6 +17,8 @@ class CategoryRepository extends \Doctrine\ORM\EntityRepository
         $qb
             ->select('c')
             ->where($qb->expr()->eq('c.deleted', 0))
+            ->andWhere($qb->expr()->notIn('c.name', ':user'))
+            ->setParameter('user', 'User')
             ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
