@@ -32,6 +32,12 @@
                                 <div class="product-inner">
                                     <h2 class="product-name">{{ product.name }}</h2>
                                     <div class="product-inner-price">
+                                        {% if product.price == calc.calculate(product) %}
+                                            <ins>{{ product.price }}</ins>
+                                        {% else %}
+                                            <ins>{{ calc.calculate(product) | number_format(2)}}</ins>
+                                            <del>{{ product.price }}</del>
+                                        {% endif %}
                                     </div>
 
                                     <form action="{{ path('add_to_cart', {'id': product.id}) }}" class="cart">

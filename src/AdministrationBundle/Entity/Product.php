@@ -96,7 +96,7 @@ class Product
     private $reviews;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AdministrationBundle\Entity\Category", inversedBy="category")
+     * @ORM\ManyToOne(targetEntity="AdministrationBundle\Entity\Category", inversedBy="products")
      * @Assert\NotNull()
      */
     private $category;

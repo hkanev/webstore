@@ -43,17 +43,17 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $this->buildProduct($manager, $htc, 'U', 380, 50, 'sony.jpg', self::description);
         $this->buildProduct($manager, $apple, 'Iphone 7', 1790, 50, 'apple.jpg', self::description);
 
-        $this->buildProduct($manager, $samsung, 'Galaxy S6', 1100, 50, 'samsung.jpg', self::description);
-        $this->buildProduct($manager, $nokia, 'Lumia 820', 585, 50, 'nokia.jpg', self::description);
-        $this->buildProduct($manager, $lg, 'G5', 1500, 50, 'lg.jpg', self::description);
-        $this->buildProduct($manager, $htc, 'U2', 680, 50, 'sony.jpg', self::description);
-        $this->buildProduct($manager, $apple, 'Iphone 6', 1290, 50, 'apple.jpg', self::description);
+        $this->buildProduct($manager, $samsung, 'Galaxy S6', 1100, 50, 'samsung1.jpg', self::description);
+        $this->buildProduct($manager, $nokia, 'Lumia 820', 585, 50, 'nokia1.jpg', self::description);
+        $this->buildProduct($manager, $lg, 'G5', 1500, 50, 'lg1.jpg', self::description);
+        $this->buildProduct($manager, $htc, 'U2', 680, 50, 'sony1.jpg', self::description);
+        $this->buildProduct($manager, $apple, 'Iphone 6', 1290, 50, 'apple1.jpg', self::description);
 
-        $this->buildProduct($manager, $samsung, 'Galaxy S5', 400, 50, 'samsung.jpg', self::description);
-        $this->buildProduct($manager, $nokia, 'Lumia 320', 185, 50, 'nokia.jpg', self::description);
-        $this->buildProduct($manager, $lg, 'G1', 500, 50, 'lg.jpg', self::description);
-        $this->buildProduct($manager, $htc, 'One X', 980, 50, 'sony.jpg', self::description);
-        $this->buildProduct($manager, $apple, 'Iphone 2', 390, 50, 'apple.jpg', self::description);
+        $this->buildProduct($manager, $samsung, 'Galaxy S5', 400, 50, 'samsung2.jpg', self::description);
+        $this->buildProduct($manager, $nokia, 'Lumia 320', 185, 50, 'nokia2.jpg', self::description);
+        $this->buildProduct($manager, $lg, 'G1', 500, 50, 'lg2.jpg', self::description);
+        $this->buildProduct($manager, $htc, 'One X', 980, 50, 'sony2.jpg', self::description);
+        $this->buildProduct($manager, $apple, 'Iphone 2', 390, 50, 'apple2.jpg', self::description);
     }
 
     /**

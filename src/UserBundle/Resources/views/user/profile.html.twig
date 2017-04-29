@@ -27,12 +27,24 @@
             <th>City:</th>
             <td>{{ user.city }}</td>
         </tr>
+        {% if app.user == user %}
         <tr>
             <td colspan="2">
                 <a href="{{ path('user_edit') }}">Edit</a>
                 <a href="{{ path('user_change_password') }}">Change Password</a>
             </td>
         </tr>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN')  %}
+        <tr>
+            <td colspan="2">
+            <a href="{{ path('admin_user_edit', {'id': user.id}) }}">Edit</a>
+            <a href="{{ path('admin_change_password', {'id': user.id}) }}">Change Password</a>
+            </td>
+        </tr>
+        {% endif %}
+
     </table>
     </div>
 </div>

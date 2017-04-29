@@ -79,10 +79,11 @@ class ShopController extends Controller
      */
     public function productView(Product $product)
     {
+        $calc = $this->get('discount_calculator');
         $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
         $form = $this->createForm(ProductType::class, $product);
 
         return $this->render('@Shop/Shop/product.html.twig',
-            ['form' => $form->createView() , 'product' => $product , 'categories' => $categories]);
+            ['form' => $form->createView() , 'product' => $product , 'categories' => $categories, 'calc' => $calc]);
     }
 }

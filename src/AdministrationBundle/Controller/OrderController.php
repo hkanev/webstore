@@ -30,6 +30,12 @@ class OrderController extends Controller
         if($request->get('quantity') == null){
             $quantity = 1;
         }
+
+        if($quantity > $product->getQuantity()){
+            $this->addFlash('info', "Invalid quantity   ");
+            return $this->redirectToRoute('product_view', ['id' => $product->getId()]);
+        }
+
         $order = $this->getDoctrine()->getRepository(Orders::class)->findExistingOrder($product, $user);
         if($order == null){
             $order = new Orders();
