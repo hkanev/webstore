@@ -68,7 +68,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1241">
               <caret line="81" column="50" lean-forward="false" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
-              <folding />
+              <folding>
+                <element signature="e#41#82#0#PHP" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -108,7 +110,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="408">
               <caret line="33" column="30" lean-forward="false" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
-              <folding />
+              <folding>
+                <element signature="e#51#111#0#PHP" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -296,7 +300,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -949,11 +952,12 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/ShoppingCart-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../webstore-master" />
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.eslint.eslintPackage" value="" />
@@ -1088,17 +1092,18 @@
       <workItem from="1493456661115" duration="1489000" />
       <workItem from="1493485325339" duration="2894000" />
       <workItem from="1493498878882" duration="36000" />
+      <workItem from="1493499155306" duration="1504000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="325464000" />
+    <option name="totallyTimeSpent" value="326968000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38965884" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39392325" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26218852" sideWeight="0.50852877" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1422,24 +1427,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
           <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="45" selection-end-column="106" />
-          <folding>
-            <marker date="1493456310689" expanded="true" signature="3313:4212" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3319:3359" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3365:3432" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3438:3480" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3486:3534" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3540:3598" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3604:3646" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3652:3700" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3706:3780" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3786:3850" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3856:3899" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3905:3984" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="3990:4041" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="4047:4085" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="4091:4129" ph="..." />
-            <marker date="1493456310689" expanded="true" signature="4135:4203" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1618,7 +1605,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1241">
           <caret line="81" column="50" lean-forward="false" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
-          <folding />
+          <folding>
+            <element signature="e#41#82#0#PHP" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1626,7 +1615,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="33" column="30" lean-forward="false" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
-          <folding />
+          <folding>
+            <element signature="e#51#111#0#PHP" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
