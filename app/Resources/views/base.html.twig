@@ -40,7 +40,7 @@
                                 <li><a href="{{ path('user_profile') }}"><i class="fa fa-user"></i> My Account</a></li>
                                 <li><a href="{{ path('cart_show') }}"><i class="fa fa-user"></i> My Cart</a></li>
                                     {% if is_granted("ROLE_ADMIN") or is_granted('ROLE_EDITOR') %}
-                                        <li><a href="{{ path('admin_show') }}"><i class="fa fa-user"></i> Admin Panel</a></li>
+                                        <li><a href="{{ path('list_checkouts') }}"><i class="fa fa-user"></i> Admin Panel</a></li>
                                     {% endif %}
                                 {% endif %}
                             </ul>
@@ -99,8 +99,7 @@
                     </div>
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="{{ path('shop_index') }}">Home</a></li>
-                            <li><a href="{{ path('products_shop_list') }}">Shop</a></li>
+                            <li class="active"><a href="{{ path('shop_products') }}">Shop</a></li>
                             <li><a href="{{ path('user_products_list') }}">User Products</a></li>
                             <li><a href="#">About us</a></li>
                             <li><a href="#">Contact</a></li>

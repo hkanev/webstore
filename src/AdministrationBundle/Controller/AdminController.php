@@ -3,6 +3,8 @@
 namespace AdministrationBundle\Controller;
 
 
+use AdministrationBundle\Entity\Orders;
+use AdministrationBundle\Entity\Product;
 use AdministrationBundle\Form\AdminUserEditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -84,10 +86,18 @@ class AdminController extends Controller
      */
     public function viewUserAction(User $user)
     {
-        $form = $this->createForm(UserType::class, $user);
+        $orderRepo = $this->getDoctrine()->getRepository(Orders::class);
+        $completeOrders = $orderRepo->findCompleteOrders($user);
 
-        return $this->render('@Administration/admin/view_user.html.twig', ['form' => $form->createView() , 'user' => $user]);
+        $productRepo = $this->getDoctrine()->getRepository(Product::class);
+        $producsInShop =  $productRepo->findUserProductsInShop($user);
+        $soldProducts =  $productRepo->findSoldUserProducts($user);
+
+
+        return $this->render("@User/user/profile.html.twig",
+            ['user'=>$user , 'completeOrders' => $completeOrders, 'productsInShop' => $producsInShop, 'soldProducts' => $soldProducts]);
     }
+
 
     /**
      * @Security("has_role('ROLE_ADMIN')")

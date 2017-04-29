@@ -45,11 +45,13 @@
                     <tr>
                         <th>Product</th>
                         <th>Price</th>
+                        <th>Quantity</th>
                     </tr>
                 {% for order in completeOrders %}
                     <tr>
                         <td>{{ order.product.getName }}</td>
                         <td>{{ order.product.getPrice }}</td>
+                        <td>{{ order.getProductQuantity - order.sellQuantity}}</td>
                         <td><a href="{{ path('user_sell_product', {'id': order.id}) }}">Sell product</a></td>
                     </tr>
                 {% endfor %}
@@ -62,11 +64,13 @@
                 <tr>
                     <th>Product</th>
                     <th>Price</th>
+                    <th>Quantity</th>
                 </tr>
                 {% for product in productsInShop %}
                 <tr>
                     <td>{{ product.name }}</td>
                     <td>{{ product.price}}</td>
+                    <td>{{ product.quantity}}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -81,10 +85,12 @@
                 <tr>
                     <th>Product</th>
                     <th>Price</th>
+                    <th>Quantity</th>
                 </tr>
                 <tr>
                     <td>{{ product.name }}</td>
                     <td>{{ product.price}}</td>
+                    <td>{{ product.sold}}</td>
                 </tr>
             </table>
         {% endfor %}

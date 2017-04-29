@@ -21,17 +21,16 @@ class OrderController extends Controller
      */
     public function addToCart(Product $product, Request $request)
     {
-        $quantity =  $request->get('quantity');
-        if($request->get('quantity') == null){
-            $quantity = 1;
-        }
-
         $user = $this->getUser();
         if ($user == null) {
             return $this->redirectToRoute('security_login');
         }
+
+        $quantity =  $request->get('quantity');
+        if($request->get('quantity') == null){
+            $quantity = 1;
+        }
         $order = $this->getDoctrine()->getRepository(Orders::class)->findExistingOrder($product, $user);
-            dump($order);
         if($order == null){
             $order = new Orders();
             $order->setUser($user);
@@ -47,7 +46,7 @@ class OrderController extends Controller
         $em->persist($order);
         $em->flush();
 
-        return $this->redirectToRoute('products_shop_list');
+        return $this->redirectToRoute('shop_products');
     }
 
     /**
@@ -55,12 +54,14 @@ class OrderController extends Controller
      */
     public function showCart()
     {
-        $form = $this->createForm(CheckoutType::class, null, ['action' => $this->generateUrl('checkout')]);
-        $calc = $this->get('discount_calculator');
-
-        if ($this->getUser() == null) {
+        $user = $this->getUser();
+        if ($user == null) {
             return $this->redirectToRoute('security_login');
         }
+
+
+        $form = $this->createForm(CheckoutType::class, null, ['action' => $this->generateUrl('checkout')]);
+        $calc = $this->get('discount_calculator');
 
         $orders = $this->getDoctrine()->getRepository(Orders::class)
                 ->findOrders($this->getUser());
@@ -91,7 +92,7 @@ class OrderController extends Controller
    {
        if($order->getUser() != $this->getUser()){
            $this->addFlash('info', 'Invalid user');
-           return $this->redirectToRoute('products_shop_list');
+           return $this->redirectToRoute('shop_products');
        }
 
        if( $order->getProductQuantity() <= $order->getSellQuantity()){

@@ -55,6 +55,12 @@ class CheckoutController extends Controller
      */
     public function checkout(Request $request)
     {
+        $user = $this->getUser();
+        if ($user == null) {
+            return $this->redirectToRoute('security_login');
+        }
+
+
         $checkout = new Checkout();
         $em = $this->getDoctrine()->getManager();
         $orders = $this->getDoctrine()->getRepository(Orders::class)
@@ -94,6 +100,6 @@ class CheckoutController extends Controller
         $em->flush();
 
         $this->addFlash('info', 'Successful purchase');
-        return $this->redirectToRoute('products_shop_list');
+        return $this->redirectToRoute('shop_products');
     }
 }

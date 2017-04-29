@@ -13,7 +13,12 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     public function findTopSellers()
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->select('p')->where('p.onSale = 1')->orderBy('p.sold', 'desc')->setMaxResults(3);
+        $qb->select('p')
+            ->where('p.onSale = 1')
+            ->andWhere('p.quantity > 0')
+            ->andWhere('p.selelr IS NULL')
+            ->orderBy('p.sold', 'desc')
+            ->setMaxResults(3);
 
         return $qb->getQuery()->getResult();
     }

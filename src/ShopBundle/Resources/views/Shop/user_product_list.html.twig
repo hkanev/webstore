@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
+{% block container %}
+
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="single-sidebar">
+                        <form action="" method="get" class="form-horizontal" id="myForm">
+                            <div class="form-group">
+                                <label for="sort_list" class=control-label">Sort by: </label>
+                                <select class="form-control" style="width: 30%; display: inline-block;" id="sort_list" name="option" onchange="this.form.submit()">
+                                    <option></option>
+                                    <option value="createdOn_asc">Recent</option>
+                                    <option value="price_asc">Price asc</option>
+                                    <option value="price_desc">Price desc</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    {{ render(controller('ShopBundle:Shop:navigation')) }}
+                </div>
+                <div class="col-sm-9">
+                    {% block flash %}
+                        {% for msg in app.session.flashBag.get('info') %}
+                            <div class="alert alert-dismissible alert-success">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong>{{ msg }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endblock %}
+                    {% for product in pagination %}
+                        <div class="col-md-3 col-sm-6">
+                            <div class="single-shop-product">
+                                <div class="product-upper">
+                                    <a href="{{ path('product_view', {'id': product.id}) }}"><img src="{{ asset('uploads/'~product.image)}}" alt=""></a>
+                                </div>
+                                <h2><a href="{{ path('product_view', {'id': product.id}) }}">{{ product.category }} {{ product.name }}</a></h2>
+                                <div class="product-carousel-price">
+                                    <ins>{{ product.price }}</ins>
+                                </div>
+
+                                <div class="">
+                                    <a class="add_to_cart_button"   href="{{ path('add_to_cart', {'id': product.id} ) }}">Add to cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="navigation text-center">
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

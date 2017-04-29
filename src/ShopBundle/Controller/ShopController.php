@@ -17,19 +17,6 @@ class ShopController extends Controller
     CONST seller = 'FoxMobile';
     CONST productsPerPage = 12;
 
-    /**
-     * @Route("/", name="shop_index")
-     * @Method("GET")
-     */
-    public function indexAction()
-    {
-        $productRepo = $this->getDoctrine()->getRepository(Product::class);
-        $promotion = $productRepo->findPromotion();
-        $topSeller = $productRepo->findTopSellers();
-        $recent = $productRepo->findRecentProducts();
-
-        return $this->render('ShopBundle:Shop:index.html.twig', ['promotion' => $promotion, 'topSellers' => $topSeller, 'recent' => $recent]);
-    }
 
     /**
      * @Route("products/navigation", name="shop_navigation")
@@ -43,7 +30,7 @@ class ShopController extends Controller
     }
 
     /**
-     * @Route("/list", name="products_shop_list")
+     * @Route("/", name="shop_products")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function productsShow(Request $request)
@@ -82,7 +69,7 @@ class ShopController extends Controller
         $pagination = $paginator->paginate(
             $query->getQuery(), $request->query->getInt('page', 1), self::productsPerPage
         );
-        return $this->render('@Shop/Shop/product_list.html.twig', ['pagination' => $pagination, 'calc' => $calc]);
+        return $this->render('@Shop/Shop/user_product_list.html.twig', ['pagination' => $pagination, 'calc' => $calc]);
     }
 
     /**

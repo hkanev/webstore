@@ -50,7 +50,7 @@ class ProductManager
 
     public function sortProducts($sort)
     {
-       return  $this->getBasicProductQuery($sort);
+       return  $this->getBasicProductQuery($sort)->andWhere('p.selelr IS NULL');
     }
 
     private function getBasicProductQuery($sort)
