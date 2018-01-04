@@ -31,8 +31,8 @@ class OrderController extends Controller
             $quantity = 1;
         }
 
-        if($quantity > $product->getQuantity()){
-            $this->addFlash('info', "Invalid quantity   ");
+        if($quantity > $product->getQuantity() ||  $quantity < 0){
+            $this->addFlash('warning', "Invalid quantity   ");
             return $this->redirectToRoute('product_view', ['id' => $product->getId()]);
         }
 
@@ -97,12 +97,12 @@ class OrderController extends Controller
    public function sellBoughtProductProcess(Orders $order, Request $request)
    {
        if($order->getUser() != $this->getUser()){
-           $this->addFlash('info', 'Invalid user');
+           $this->addFlash('warning', 'Invalid user');
            return $this->redirectToRoute('shop_products');
        }
 
        if( $order->getProductQuantity() <= $order->getSellQuantity()){
-           $this->addFlash('info', 'Not enough quantity of '.$order->getProduct()->getName());
+           $this->addFlash('warning', 'Not enough quantity of '.$order->getProduct()->getName());
            return $this->redirectToRoute('user_profile');
        }
 
@@ -123,7 +123,7 @@ class OrderController extends Controller
                        ->createUserProduct($order, $image, $oldImage, $category, $this->getUser());
 
            if($order->getProductQuantity() < $newProduct->getQuantity() ){
-               $this->addFlash('info', 'Not enough quantity of '.$order->getProduct()->getName());
+               $this->addFlash('warning', 'Not enough quantity of '.$order->getProduct()->getName());
                return $this->redirectToRoute('user_profile');
            }
            $order->setSellQuantity($product->getQuantity());

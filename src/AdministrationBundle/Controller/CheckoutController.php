@@ -78,7 +78,7 @@ class CheckoutController extends Controller
 
             $product = $this->get('order.manager')->manageProduct($order);
             if($product == null){
-                $this->addFlash('info', 'Invalid quantity');
+                $this->addFlash('warning', 'Invalid quantity');
                 return $this->redirectToRoute('cart_show');
             }
 
@@ -88,7 +88,7 @@ class CheckoutController extends Controller
 
         $buyer = $this->get('order.manager')->manageCash($totalPrice);
         if($buyer == null){
-            $this->addFlash('info', 'Not enough cash');
+            $this->addFlash('warning', 'Not enough cash');
             return $this->redirectToRoute('cart_show');
         }
 
