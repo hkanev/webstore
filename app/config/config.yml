@@ -1,5 +1,5 @@
 imports:
-    - { resource: parameters_production.php }
+    - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@ShopBundle/Resources/config/services.yml" }
