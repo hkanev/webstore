@@ -100,12 +100,10 @@ class DiscountRepository extends \Doctrine\ORM\EntityRepository
 
 
         $results = $qb->getQuery()->getResult();
-        dump($results);
         $promotions = [];
         foreach ($results as $promotion){
             $promotions[(int)$promotion['id']] = (int)$promotion['discount'];
         }
-        dump($promotions);
         return $promotions;
 
     }
