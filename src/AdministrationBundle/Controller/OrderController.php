@@ -139,6 +139,6 @@ class OrderController extends Controller
            return $this->redirectToRoute("user_profile");
        }
 
-       return $this->render('@Administration/products/create.html.twig', ['form' => $form->createView()]);
+       return $this->render('AdministrationBundle:products:create.html.twig', ['form' => $form->createView()]);
    }
 }
